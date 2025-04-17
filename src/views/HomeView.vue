@@ -1,9 +1,9 @@
 <script setup>
-import PageBrowse from '@/components/pageBrowse.vue'
-import PageExit from '@/components/pageExit.vue'
+import PageBrowse from '@/components/PageBrowse.vue'
+import PageExit from '@/components/PageExit.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import PageMain from '@/components/pageMain.vue'
-import PageNewCard from '@/components/pageNewCard.vue'
+import PageMain from '@/components/PageMain.vue'
+import PageNewCard from '@/components/PageNewCard.vue'
 </script>
 
 <template>
