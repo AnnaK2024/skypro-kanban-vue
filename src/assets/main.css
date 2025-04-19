@@ -777,7 +777,7 @@ body {
   padding: 0;
 }
 .header__pop-user-set {
-  display: block;
+  display: none;
   position: absolute;
   top: 61px;
   right: 0;
@@ -790,6 +790,9 @@ body {
   padding: 34px;
   text-align: center;
   z-index: 2;
+}
+.header__pop-user-set.active {
+  display: block;
 }
 
 .main {
