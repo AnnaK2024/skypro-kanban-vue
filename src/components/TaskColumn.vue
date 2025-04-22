@@ -1,20 +1,11 @@
 <template>
   <tasks />
 
-  <div v-for="card in tasks" :key="card.id">
-    <div>
-      <p>{{ card.status }}</p>
-      <p>{{ card.topic }}</p>
-      <h3>{{ card.title }}</h3>
-      <p>{{ card.date }}</p>
-    </div>
-  </div>
-
   <div>
     <main class="main">
       <div class="container">
         <div class="main__block">
-          <div class="main__content">
+          <div class="main__content" v-for="card in tasks" :key="card.id">
             <div class="main__column column">
               <div class="column__title">
                 <p>{{ card.status }}</p>
@@ -286,7 +277,7 @@
                 </div>
               </div>
             </div>
-            <div class="main__column">
+            <!-- <div class="main__column">
               <div class="column__title">
                 <p>{{ card.status }}</p>
               </div>
@@ -627,7 +618,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
