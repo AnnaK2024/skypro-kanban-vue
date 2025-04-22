@@ -4,6 +4,15 @@ import BaseTask from '@/components/BaseTask.vue'
 import ExitModal from '@/components/ExitModal.vue'
 import NewCardModal from '@/components/NewCardModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
+import { onMounted, ref } from 'vue'
+
+const loading = ref(true)
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 3000)
+})
 </script>
 
 <template>
@@ -12,6 +21,6 @@ import TaskColumn from '@/components/TaskColumn.vue'
     <BaseHeader />
     <NewCardModal />
     <BaseTask />
-    <TaskColumn />
+    <TaskColumn :loading="loading" />
   </main>
 </template>
