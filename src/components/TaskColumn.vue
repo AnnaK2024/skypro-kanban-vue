@@ -28,7 +28,6 @@
 import { tasks } from './mocks/tasks'
 import TaskCard from './TaskCard.vue'
 
-
 defineProps({
   loading: Boolean,
 })
