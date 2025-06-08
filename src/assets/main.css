@@ -58,15 +58,7 @@ body {
   padding: 0 30px;
 } */
 
-.loading {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 30px;
-  text-align: center;
-  background-color: #f1f1f1;
-}
-
-/* ._hover01:hover {
+._hover01:hover {
   background-color: #33399b;
 }
 
@@ -86,7 +78,7 @@ body {
 }
 ._hover03:hover a {
   color: #ffffff;
-} */
+}
 
 .pop-user-set:target,
 .pop-exit:target,
@@ -124,7 +116,7 @@ body {
   top: 0;
   left: 0;
 }
-
+/* 
 .pop-exit {
   display: none;
   width: 100%;
@@ -220,7 +212,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
 .pop-user-set__name {
   color: #000;
@@ -286,7 +278,7 @@ body {
   color: #565eef;
 }
 
-.pop-new-card {
+/* .pop-new-card {
   display: none;
   width: 100%;
   min-width: 375px;
@@ -350,7 +342,7 @@ body {
   width: 100%;
   display: block;
   margin-bottom: 20px;
-}
+} */
 
 .form-new__block {
   display: flex;
@@ -551,7 +543,7 @@ body {
   line-height: 14px;
   white-space: nowrap;
 }
-
+/* 
 .pop-browse {
   display: none;
   width: 100%;
@@ -638,7 +630,7 @@ body {
 .pop-browse__btn-browse .btn-group button,
 .pop-browse__btn-edit .btn-group button {
   margin-right: 8px;
-}
+} */
 
 .form-browse__block {
   display: flex;
@@ -811,7 +803,7 @@ body {
   display: block;
 } */
 
-.main {
+/* .main {
   width: 100%;
   background-color: #eaeef6;
 }
@@ -822,8 +814,8 @@ body {
 }
 .main__content {
   width: 100%;
-}
-.main__column {
+} */
+/* .main__column {
   width: 20%;
   margin: 0 auto;
   display: block;
@@ -839,9 +831,9 @@ body {
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
-}
+} */
 
-.cards {
+/* .cards {
   width: 100%;
   display: block;
   position: relative;
@@ -925,7 +917,7 @@ body {
   line-height: 13px;
   color: #94a6be;
   letter-spacing: 0.2px;
-}
+} */
 
 @media screen and (max-width: 1200px) {
   .main__block {
