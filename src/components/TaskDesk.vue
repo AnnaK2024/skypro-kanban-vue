@@ -56,5 +56,6 @@ onMounted(() => {
 
 .columns {
   display: flex;
+  flex-wrap: wrap;
 }
 </style>
