@@ -8,8 +8,15 @@
       <div class="container">
         <div class="main__block">
           <div class="main__content">
-            <div v-if="loading" class="loading"></div>
-            <div v-else>
+            <template v-if="loading">
+              <div class="columns">
+                <div v-for="status in statuses" :key="status" class="column-skeleton">
+                  <div class="skeleton skeleton-title"></div>
+                  <div v-for="n in 3" :key="n" class="skeleton skeleton-task"></div>
+                </div>
+              </div>
+            </template>
+            <template v-else>
               <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
               <div v-else class="columns">
                 <TaskColumn
@@ -19,7 +26,7 @@
                   :tasks="filteredTasks(status)"
                 />
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
@@ -85,5 +92,62 @@ onMounted(() => {
 .columns {
   display: flex;
   flex-wrap: wrap;
+}
+
+/* Skeleton styles */
+.skeleton {
+  background-color: #ddd;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+.skeleton-title {
+  width: 80%;
+  height: 24px;
+  margin-bottom: 16px;
+}
+
+.skeleton-task {
+  width: 100%;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.column-skeleton {
+  flex: 1 1 18%;
+  margin-right: 20px;
+  background: #f5f7fa;
+  padding: 16px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  min-width: 180px;
+}
+
+@keyframes loading {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 100%;
+  }
 }
 </style>

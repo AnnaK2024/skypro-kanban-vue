@@ -1,7 +1,5 @@
 <template>
-    <div class="loader-card" >
-
-    </div>
+    <div class="loader-card" ></div>
 </template>
 
 <script setup>
