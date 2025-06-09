@@ -8,14 +8,17 @@
       <div class="container">
         <div class="main__block">
           <div class="main__content">
-            <div v-if="loading" class="loading">Данные загружаются...</div>
-            <div v-else class="columns">
-              <TaskColumn
-                v-for="status in statuses"
-                :key="status"
-                :status="status"
-                :tasks="filteredTasks(status)"
-              />
+            <div v-if="loading" class="loading"></div>
+            <div v-else>
+              <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
+              <div v-else class="columns">
+                <TaskColumn
+                  v-for="status in statuses"
+                  :key="status"
+                  :status="status"
+                  :tasks="filteredTasks(status)"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -25,12 +28,14 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+
 import BaseHeader from '@/components/BaseHeader.vue'
 import BaseTask from '@/components/BaseTask.vue'
 import ExitModal from '@/components/ExitModal.vue'
 import NewCardModal from '@/components/NewCardModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
-import { onMounted, ref } from 'vue'
+
 import { tasks } from './mocks/tasks'
 
 const loading = ref(true)
@@ -40,81 +45,27 @@ const filteredTasks = (status) => {
   return tasks.filter((task) => task.status === status)
 }
 
+const hasTasks = computed(() => {
+  return statuses.some(status => filteredTasks(status).length > 0)
+})
+
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 5000)
+  }, 3000)
 })
 </script>
 
 <style scoped>
-.loading {
-  height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  font-size: 65px;
-  font-weight: bold;
-  color: transparent;
-  background: linear-gradient(
-    90deg,
-    #0d47a1 20%,
-    #4494e4 40%,
-    #0d47a1 60%
-  );
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: wave 2s linear infinite;
-  position: relative;
-  display: inline-block;
-}
-
-/* Анимация волны по тексту */
-@keyframes wave {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-/* Точки в конце */
-.loader::after {
-  content: '...';
-  position: absolute;
-  right: -60px; /* отступ справа от текста */
-  top: 0;
-  font-size: 64px;
-  color: #0d47a1;
-  animation: dots 1.5s steps(4, end) infinite;
-}
-
-/* Анимация появления точек */
-@keyframes dots {
-  0%,
-  20% {
-    content: '';
-    opacity: 0;
-  }
-  40% {
-    content: '.';
-    opacity: 1;
-  }
-  60% {
-    content: '..';
-    opacity: 1;
-  }
-  80%,
-  100% {
-    content: '...';
-    opacity: 1;
-  }
+.no-tasks {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 20px 0;
 }
 .main {
   width: 100%;
+  height: 100vh;
   background-color: #eaeef6;
 }
 .container {

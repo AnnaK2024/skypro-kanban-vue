@@ -60,6 +60,7 @@ const { card } = defineProps({
     type: Object,
     required: true,
   },
+  loading: Boolean,
 })
 
 // Функция для получения класса темы карточки

@@ -171,4 +171,88 @@ import BaseCalendar from './BaseCalendar.vue';
 .pop-browse__btn-edit .btn-group button {
   margin-right: 8px;
 }
+.categories {
+  margin-bottom: 20px;
+}
+.categories__themes {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.categories__p {
+  margin-bottom: 14px;
+}
+.categories__theme {
+  display: inline-block;
+  width: auto;
+  height: 30px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  margin-right: 7px;
+  opacity: 0.4;
+}
+.categories__theme p {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+  white-space: nowrap;
+}
+.form-browse__block {
+  display: flex;
+  flex-direction: column;
+}
+.form-browse__area {
+  max-width: 370px;
+  width: 100%;
+  outline: none;
+  padding: 14px;
+  background: #eaeef6;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  margin-top: 14px;
+  height: 200px;
+}
+.form-browse__area::-moz-placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1px;
+  color: #94a6be;
+  letter-spacing: -0.14px;
+}
+.form-browse__area::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1px;
+  color: #94a6be;
+  letter-spacing: -0.14px;
+}
+.status {
+  margin-bottom: 11px;
+}
+.status__p {
+  margin-bottom: 14px;
+}
+.status__themes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.status__theme {
+  border-radius: 24px;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  color: #94a6be;
+  padding: 11px 14px 10px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}
+.status__theme p {
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -0.14px;
+}
 </style>

@@ -214,7 +214,7 @@ body {
   justify-content: space-between;
 } */
 
-.pop-user-set__name {
+/* .pop-user-set__name {
   color: #000;
   font-size: 14px;
   font-weight: 500;
@@ -276,7 +276,7 @@ body {
 }
 .pop-user-set button a {
   color: #565eef;
-}
+} */
 
 /* .pop-new-card {
   display: none;
@@ -344,7 +344,7 @@ body {
   margin-bottom: 20px;
 } */
 
-.form-new__block {
+/* .form-new__block {
   display: flex;
   flex-direction: column;
 }
@@ -396,7 +396,7 @@ body {
   line-height: 1;
   color: #ffffff;
   float: right;
-}
+} */
 
 /* .subttl {
   color: #000;
@@ -516,7 +516,7 @@ body {
   font-weight: 700;
 } */
 
-.categories {
+/* .categories {
   margin-bottom: 20px;
 }
 .categories__themes {
@@ -542,7 +542,7 @@ body {
   font-weight: 600;
   line-height: 14px;
   white-space: nowrap;
-}
+} */
 /* 
 .pop-browse {
   display: none;
@@ -632,7 +632,7 @@ body {
   margin-right: 8px;
 } */
 
-.form-browse__block {
+/* .form-browse__block {
   display: flex;
   flex-direction: column;
 }
@@ -663,9 +663,9 @@ body {
   line-height: 1px;
   color: #94a6be;
   letter-spacing: -0.14px;
-}
+} */
 
-.status {
+/* .status {
   margin-bottom: 11px;
 }
 .status__p {
@@ -689,7 +689,7 @@ body {
   font-size: 14px;
   line-height: 1;
   letter-spacing: -0.14px;
-}
+} */
 
 ._btn-bor {
   border-radius: 4px;
