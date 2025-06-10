@@ -78,7 +78,7 @@ const getThemeClass = (topic) => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cards {
   width: 100%;
   display: block;

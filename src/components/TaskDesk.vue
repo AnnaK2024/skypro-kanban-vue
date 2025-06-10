@@ -8,25 +8,17 @@
       <div class="container">
         <div class="main__block">
           <div class="main__content">
-            <template v-if="loading">
-              <div class="columns">
-                <div v-for="status in statuses" :key="status" class="column-skeleton">
-                  <div class="skeleton skeleton-title"></div>
-                  <div v-for="n in 3" :key="n" class="skeleton skeleton-task"></div>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
-              <div v-else class="columns">
-                <TaskColumn
-                  v-for="status in statuses"
-                  :key="status"
-                  :status="status"
-                  :tasks="filteredTasks(status)"
-                />
-              </div>
-            </template>
+            <div v-if="loading">
+              <CardLoader />
+            </div>
+            <div v-else class="columns">
+              <TaskColumn
+                v-for="status in statuses"
+                :key="status"
+                :status="status"
+                :tasks="filteredTasks(status)"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -35,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import BaseHeader from '@/components/BaseHeader.vue'
 import BaseTask from '@/components/BaseTask.vue'
@@ -44,6 +36,7 @@ import NewCardModal from '@/components/NewCardModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
 
 import { tasks } from './mocks/tasks'
+import CardLoader from './CardLoader.vue'
 
 const loading = ref(true)
 const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
@@ -52,14 +45,10 @@ const filteredTasks = (status) => {
   return tasks.filter((task) => task.status === status)
 }
 
-const hasTasks = computed(() => {
-  return statuses.some(status => filteredTasks(status).length > 0)
-})
-
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 100000)
 })
 </script>
 
@@ -104,18 +93,13 @@ onMounted(() => {
 }
 
 .skeleton::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -150px;
   height: 100%;
   width: 150px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   animation: loading 1.5s infinite;
 }
 

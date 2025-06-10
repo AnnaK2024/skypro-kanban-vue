@@ -25,7 +25,6 @@
 <script setup></script>
 
 <style lang="scss" scoped>
-
 .pop-exit {
   display: none;
   width: 100%;

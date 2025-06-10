@@ -78,12 +78,10 @@
 </template>
 
 <script setup>
-import BaseCalendar from './BaseCalendar.vue';
-
+import BaseCalendar from './BaseCalendar.vue'
 </script>
 
 <style lang="scss" scoped>
-
 .pop-browse {
   display: none;
   width: 100%;
