@@ -81,7 +81,7 @@
 import BaseCalendar from './BaseCalendar.vue'
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .pop-browse {
   display: none;
   width: 100%;
@@ -169,33 +169,6 @@ import BaseCalendar from './BaseCalendar.vue'
 .pop-browse__btn-edit .btn-group button {
   margin-right: 8px;
 }
-.categories {
-  margin-bottom: 20px;
-}
-.categories__themes {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.categories__p {
-  margin-bottom: 14px;
-}
-.categories__theme {
-  display: inline-block;
-  width: auto;
-  height: 30px;
-  padding: 8px 20px;
-  border-radius: 24px;
-  margin-right: 7px;
-  opacity: 0.4;
-}
-.categories__theme p {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 14px;
-  white-space: nowrap;
-}
 .form-browse__block {
   display: flex;
   flex-direction: column;
@@ -253,7 +226,88 @@ import BaseCalendar from './BaseCalendar.vue'
   line-height: 1;
   letter-spacing: -0.14px;
 }
+._btn-bor {
+  border-radius: 4px;
+  border: 0.7px solid var(--palette-navy-60, #565eef);
+  outline: none;
+  background: transparent;
+  color: #565eef;
+}
+._btn-bor a {
+  color: #565eef;
+}
+
+._btn-bg {
+  border-radius: 4px;
+  background: #565eef;
+  border: none;
+  outline: none;
+  color: #ffffff;
+}
+._btn-bg a {
+  color: #ffffff;
+}
+
+._hide {
+  display: none;
+}
+
+._dark {
+  display: none;
+}
 .pop-browse:target {
   display: block;
+}
+@media screen and (max-width: 660px){
+    .pop-browse {
+    top: 70px;
+  }
+  .pop-browse__container {
+    padding: 0;
+    justify-content: flex-start;
+  }
+  .pop-browse__block {
+    border-radius: 0;
+  }
+  .pop-browse__wrap {
+    display: block;
+  }
+}
+@media screen and (max-width: 495px){
+  .pop-browse__block {
+    padding: 20px 16px 32px;
+  }
+  .pop-browse__content .theme-down {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .pop-browse__content .theme-top {
+    display: none;
+  }
+  .pop-browse__form {
+    max-width: 100%;
+  }
+  .pop-browse__calendar {
+    width: 100%;
+  }
+  .pop-browse__btn-browse button,
+  .pop-browse__btn-edit button {
+    width: 100%;
+    height: 40px;
+  }
+  .pop-browse__btn-browse .btn-group,
+  .pop-browse__btn-edit .btn-group {
+    width: 100%;
+  }
+  .pop-browse__btn-browse .btn-group button,
+  .pop-browse__btn-edit .btn-group button {
+    margin-right: 0px;
+  }
+  .form-browse__area {
+    max-width: 100%;
+  }
+  .form-browse__area {
+    height: 37px;
+  }
 }
 </style>

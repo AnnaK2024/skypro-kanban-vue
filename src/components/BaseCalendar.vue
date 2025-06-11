@@ -82,7 +82,7 @@
 
 <script setup></script>
 
-<style lang="scss" scoped>
+<style scoped>
 .subttl {
   color: #000;
   font-size: 14px;
@@ -193,5 +193,38 @@
 }
 ._current {
   font-weight: 700;
+}
+@media screen and (max-width: 660px){
+  .calendar {
+    max-width: 340px;
+    width: 100%;
+  }
+  .calendar__ttl,
+  .calendar__nav,
+  .calendar__period {
+    padding: 0;
+  }
+  .calendar .date-create {
+    display: none;
+    margin-bottom: 7px;
+  }
+  .calendar__p {
+    font-size: 14px;
+  }
+  .calendar__day-name {
+    font-size: 14px;
+  }
+  .calendar__cells {
+    width: 344px;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .calendar__cell {
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+  }
 }
 </style>

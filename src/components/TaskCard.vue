@@ -78,7 +78,7 @@ const getThemeClass = (topic) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .cards {
   width: 100%;
   display: block;
@@ -101,7 +101,6 @@ const getThemeClass = (topic) => {
   justify-content: stretch;
   padding: 15px 13px 19px;
 }
-
 .card__group {
   width: 100%;
   height: 20px;
@@ -164,5 +163,22 @@ const getThemeClass = (topic) => {
   color: #94a6be;
   letter-spacing: 0.2px;
 }
-
+@media screen and (max-width: 1200px) {
+  .cards {
+    width: 100%;
+    display: flex;
+    overflow-y: auto;
+  }
+  .cards__card {
+    width: 220px;
+    height: 130px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: stretch;
+    padding: 15px 13px 19px;
+  }
+}
 </style>

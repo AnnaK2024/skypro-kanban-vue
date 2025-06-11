@@ -201,4 +201,17 @@ const toggleModal = () => {
 .pop-user-set:target{
   display: block;
 }
+@media screen and (max-width: 495px) {
+  .header__btn-main-new {
+    z-index: 3;
+    position: fixed;
+    left: 16px;
+    bottom: 30px;
+    top: auto;
+    width: calc(100vw - 32px);
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 0;
+  }
+}  
 </style>

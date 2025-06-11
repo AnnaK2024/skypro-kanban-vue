@@ -124,4 +124,22 @@
 .pop-exit:target{
   display: block;
 }
+@media only screen and (max-width: 375px) {
+  .pop-exit__block {
+    padding: 50px 20px;
+  }
+  .pop-exit__exit-yes {
+    width: 100%;
+    height: 40px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .pop-exit__exit-no {
+    width: 100%;
+    height: 40px;
+  }
+  .pop-exit__form-group {
+    display: block;
+  }
+} 
 </style>
