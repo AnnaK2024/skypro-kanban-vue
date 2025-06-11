@@ -47,7 +47,7 @@ const toggleModal = () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .header {
   width: 100%;
   margin: 0 auto;
@@ -197,5 +197,8 @@ const toggleModal = () => {
 }
 .pop-user-set button a {
   color: #565eef;
+}
+.pop-user-set:target{
+  display: block;
 }
 </style>

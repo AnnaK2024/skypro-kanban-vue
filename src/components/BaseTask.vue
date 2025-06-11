@@ -253,4 +253,7 @@ import BaseCalendar from './BaseCalendar.vue'
   line-height: 1;
   letter-spacing: -0.14px;
 }
+.pop-browse:target {
+  display: block;
+}
 </style>

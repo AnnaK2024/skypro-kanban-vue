@@ -24,7 +24,7 @@
 
 <script setup></script>
 
-<style lang="scss" scoped>
+<style scoped>
 .pop-exit {
   display: none;
   width: 100%;
@@ -120,5 +120,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.pop-exit:target{
+  display: block;
 }
 </style>

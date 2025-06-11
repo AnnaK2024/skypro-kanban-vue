@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="pop-new-card" id="popNewCard">
       <div class="pop-new-card__container">
         <div class="pop-new-card__block">
@@ -50,7 +49,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -175,5 +173,8 @@ import BaseCalendar from './BaseCalendar.vue'
   line-height: 1;
   color: #ffffff;
   float: right;
+}
+.pop-new-card:target {
+  display: block;
 }
 </style>

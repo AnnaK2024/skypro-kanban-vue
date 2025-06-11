@@ -164,4 +164,5 @@ const getThemeClass = (topic) => {
   color: #94a6be;
   letter-spacing: 0.2px;
 }
+
 </style>
