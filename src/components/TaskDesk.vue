@@ -48,7 +48,7 @@ const filteredTasks = (status) => {
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 5000)
 })
 </script>
 
