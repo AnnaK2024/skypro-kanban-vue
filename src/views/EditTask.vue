@@ -1,3 +1,4 @@
+<!-- Редактирование задачи из карточки -->
 <template>
   <div class="pop-browse" id="popBrowse">
     <div class="pop-browse__container">
@@ -78,7 +79,7 @@
 </template>
 
 <script setup>
-import BaseCalendar from './BaseCalendar.vue'
+import BaseCalendar from '@/components/BaseCalendar.vue';
 </script>
 
 <style scoped>

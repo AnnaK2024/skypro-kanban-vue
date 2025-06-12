@@ -1,3 +1,4 @@
+<!-- Карточка создания новой задачи -->
 <template>
   <div class="pop-new-card" id="popNewCard">
     <div class="pop-new-card__container">

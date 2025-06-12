@@ -1,9 +1,9 @@
 <template>
   <main>
-    <ExitModal />
     <BaseHeader />
     <NewCardModal />
-    <BaseTask />
+    <EditTask/>
+    <ExitModal />
     <div class="main">
       <div class="container">
         <div class="main__block">
@@ -35,10 +35,10 @@
 import { ref, onMounted, computed } from 'vue'
 
 import BaseHeader from '@/components/BaseHeader.vue'
-import BaseTask from '@/components/BaseTask.vue'
-import ExitModal from '@/components/ExitModal.vue'
-import NewCardModal from '@/components/NewCardModal.vue'
+import NewCardModal from '@/views/NewCardModal.vue'
+import EditTask from '@/views/EditTask.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
+import ExitModal from '@/views/ExitModal.vue'
 
 import { tasks } from './mocks/tasks'
 import CardLoader from './CardLoader.vue'

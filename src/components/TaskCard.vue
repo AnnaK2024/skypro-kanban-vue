@@ -4,13 +4,13 @@
       <div class="card__theme" :class="getThemeClass(card.topic)">
         <p>{{ card.topic }}</p>
       </div>
-      <a href="#popBrowse" target="_self">
+      <RouterLink :to=" '/card/' + card.id"><a target="_self">
         <div class="card__btn">
           <div></div>
           <div></div>
           <div></div>
         </div>
-      </a>
+      </a></RouterLink>
     </div>
     <div class="card__content">
       <a :href="card.link" target="_blank">
@@ -53,6 +53,7 @@
 
 <script setup>
 import { defineProps } from 'vue'
+import { RouterLink } from 'vue-router'
 
 // Определяем свойства компонента
 const { card } = defineProps({

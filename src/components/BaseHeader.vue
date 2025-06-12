@@ -18,7 +18,7 @@
             >
             <div
               class="header__pop-user-set pop-user-set"
-              :style="{ display: isModalVisible ? 'block' : 'none' }"
+              v-if="isModalVisible"
               id="user-set-target"
             >
               <!-- <a href="">x</a> -->

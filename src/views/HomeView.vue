@@ -8,4 +8,4 @@
 import TaskDesk from '@/components/TaskDesk.vue'
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
