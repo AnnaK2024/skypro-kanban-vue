@@ -43,7 +43,7 @@
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar/>
+            <BaseCalendar />
           </div>
           <div class="theme-down__categories theme-down">
             <p class="categories__p subttl">Категория</p>
@@ -79,8 +79,16 @@
 </template>
 
 <script setup>
-import BaseCalendar from './BaseCalendar.vue';
+import BaseCalendar from './BaseCalendar.vue'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { tasks } from './mocks/tasks'
 
+const route = useRoute()
+
+const task = computed(() => {
+  return tasks.value.find((t) => t.id === route.params.id) || { name: '', translation: '' }
+})
 </script>
 
 <style scoped>
@@ -260,8 +268,8 @@ import BaseCalendar from './BaseCalendar.vue';
 .pop-browse:target {
   display: block;
 }
-@media screen and (max-width: 660px){
-    .pop-browse {
+@media screen and (max-width: 660px) {
+  .pop-browse {
     top: 70px;
   }
   .pop-browse__container {
@@ -275,7 +283,7 @@ import BaseCalendar from './BaseCalendar.vue';
     display: block;
   }
 }
-@media screen and (max-width: 495px){
+@media screen and (max-width: 495px) {
   .pop-browse__block {
     padding: 20px 16px 32px;
   }

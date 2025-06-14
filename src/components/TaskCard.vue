@@ -1,18 +1,20 @@
 <template>
   <div class="cards__card card">
     <div class="card__group">
-      <div class="card__theme" :class="colorTopics[finalCard.topic]">
-        <p>{{ finalCard.topic }}</p>
+      <div class="card__theme" :class="getThemeClass(card.topic)">
+        <p>{{ card.topic }}</p>
       </div>
-      <RouterLink :to="'/card/' + finalCard.id" class="card__btn">
-        <div></div>
-        <div></div>
-        <div></div>
-      </RouterLink>
+      <RouterLink :to=" '/card/' + card.id"><a target="_self">
+        <div class="card__btn">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </a></RouterLink>
     </div>
     <div class="card__content">
-      <a :href="finalCard.link" target="_blank">
-        <h3 class="card__title">{{ finalCard.title }}</h3>
+      <a :href="card.link" target="_blank">
+        <h3 class="card__title">{{ card.title }}</h3>
       </a>
       <div class="card__date">
         <svg
@@ -43,48 +45,40 @@
             </clipPath>
           </defs>
         </svg>
-        <p>{{ finalCard.date }}</p>
+        <p>{{ card.date }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
-import { tasks } from './mocks/tasks'
+import { defineProps } from 'vue'
+import { RouterLink} from 'vue-router'
 
-// Получаем props (если переданы)
-const props = defineProps({
-  card: Object
+
+// Определяем свойства компонента
+const { card } = defineProps({
+  card: {
+    type: Object,
+    required: true,
+  },
+  loading: Boolean,
 })
 
-// Цвета по темам
-const colorTopics = {
-  'Research': '_green',
-  'Web Design': '_orange',
-  'Copywriting': '_purple'
+// Функция для получения класса темы карточки
+const getThemeClass = (topic) => {
+  switch (topic) {
+    case 'Research':
+      return '_green'
+    case 'Web Design':
+      return '_orange'
+    case 'Copywriting':
+      return '_purple'
+    default:
+      return ''
+  }
 }
-
-// Получаем ID из маршрута
-const route = useRoute()
-const routeCardId = computed(() => route.params.id)
-
-// Универсальный computed: либо props.card, либо ищем по ID из маршрута
-const finalCard = computed(() => {
-  if (props.card) {
-    return props.card
-  }
-  return tasks.find(task => task.id === routeCardId.value) || {
-    title: '',
-    topic: '',
-    date: '',
-    link: '',
-    id: ''
-  }
-})
 </script>
-
 
 <style scoped>
 .cards {

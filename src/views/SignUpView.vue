@@ -1,11 +1,11 @@
 <template>
- <AuthForm :onClick="hendleSignIn"/>
+ <AuthForm :onClick="handleSignUp" :isSignUp="true"/>
 </template>
 
 <script setup lang="ts">
-import AuthForm from '../components/AuthForm.vue';
+import AuthForm from '@/components/AuthForm.vue';
 
-async function hendleSignIn() {
+async function handleSignUp() {
     console.log("Регистрация")
     
 }

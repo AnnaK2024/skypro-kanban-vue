@@ -28,23 +28,23 @@ const router = createRouter({
           component: () => import('@/views/ExitView.vue'),
         },
       ],
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
-      path: '/sign-in', 
-      component: SignInView, 
+      path: '/sign-in',
+      component: SignInView,
     },
     {
-      path: '/sign-up', 
-      component: SignUpView, 
+      path: '/sign-up',
+      component: SignUpView,
     },
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundView,
     },
   ],
-  meta: {
-    requiresAuth: true,
-  },
 })
 
 router.beforeEach((to, from, next) => {

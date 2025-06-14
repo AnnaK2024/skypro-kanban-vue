@@ -1,12 +1,18 @@
 <template>
- <AuthForm :onClick="hendleSignIn" />
+ <AuthForm :onClick="handleSignIn" />
 </template>
 
 <script setup lang="ts">
-import AuthForm from '../components/AuthForm.vue';
+import AuthForm from '@/components/AuthForm.vue';
+import { useRouter } from 'vue-router';
 
-async function hendleSignIn() {
-    console.log("Вход")
+
+const router = useRouter()
+
+async function handleSignIn(e) {
+    e.preventDefault()
+    localStorage.setItem('userInfo', 'true')
+    router.push('/')
     
 }
 </script>

@@ -31,7 +31,7 @@
                 <input type="checkbox" class="checkbox" name="checkbox" />
               </div>
               <RouterLink to="/exit">
-              <button type="button" class="_hover03">Выйти</button>
+              <button @click="logout" type="button" class="_hover03">Выйти</button>
               </RouterLink>
             </div>
           </nav>
@@ -44,11 +44,18 @@
 
 <script setup>
 import { ref } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 
 const isModalVisible = ref(false)
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
+}
+const router = useRouter()
+
+function logout(e) {
+   e.preventDefault() 
+   localStorage.removeItem('userInfo') 
+   router.push('/sign-in')
 }
 </script>
 

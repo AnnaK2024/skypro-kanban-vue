@@ -6,75 +6,37 @@
           <div class="modal__ttl">
             <h2>{{ isSignUp ? 'Регистрация' : 'Вход' }}</h2>
           </div>
-          <form @submit.prevent="handleSubmit" class="modal__form-login" :id="isSignUp ? 'formSignUp' : 'formSignIn'">
-            <template v-if="isSignUp">
-              <input
-                v-model="signUpData.firstName"
-                class="modal__input first-name"
-                type="text"
-                name="first-name"
-                id="first-name"
-                placeholder="Имя"
-                required
-              />
-              <input
-                v-model="signUpData.email"
-                class="modal__input login"
-                type="email"
-                name="email"
-                id="emailSignUp"
-                placeholder="Эл. почта"
-                required
-              />
-              <input
-                v-model="signUpData.password"
-                class="modal__input password-first"
-                type="password"
-                name="password"
-                id="passwordSignUp"
-                placeholder="Пароль"
-                required
-              />
-              <button type="submit" class="modal__btn-signup-ent _hover01">
-                Зарегистрироваться
-              </button>
-              <div class="modal__form-group">
-                <p>
-                  Уже есть аккаунт?
-                  <button type="button" class="link-button" @click="toggleForm">Войдите здесь</button>
-                </p>
-              </div>
-            </template>
-
-            <template v-else>
-              <input
-                v-model="signInData.email"
-                class="modal__input"
-                type="email"
-                name="email"
-                id="emailSignIn"
-                placeholder="Эл. почта"
-                required
-              />
-              <input
-                v-model="signInData.password"
-                class="modal__input"
-                type="password"
-                name="password"
-                id="passwordSignIn"
-                placeholder="Пароль"
-                required
-              />
-              <button type="submit" class="modal__btn-enter _hover01">
-                Войти
-              </button>
-              <div class="modal__form-group">
-                <p>
-                  Нужно зарегистрироваться?
-                  <button type="button" class="link-button" @click="toggleForm">Регистрируйтесь здесь</button>
-                </p>
-              </div>
-            </template>
+          <form class="modal__form-login" id="formLogUp" action="#">
+            <input
+              v-show="isSignUp"
+              class="modal__input first-name"
+              type="text"
+              name="first-name"
+              id="first-name"
+              placeholder="Имя"
+            >
+            <input
+              class="modal__input"
+              type="text"
+              name="login"
+              id="formlogin"
+              placeholder="Эл. почта"
+            >
+            <input
+              :class="[{error: errorFields?.password}]"
+              class="modal__input"
+              type="password"
+              name="password"
+              id="formpassword"
+              placeholder="Пароль"
+            >
+            <button class="modal__btn-enter _hover01" id="btnEnter">
+              <a href="../main.html">Войти</a>
+            </button>
+            <div class="modal__form-group">
+              <p>{{ isSignUp ? 'Уже есть аккаунт?' : 'Нужно зарегистрироваться?' }}</p>
+              <RouterLink :to="isSignUp ? '/sign-in' : '/sign-up'">{{ isSignUp ? 'Войдите здесь' : 'Регистрируйтесь здесь' }}</RouterLink>
+            </div>
           </form>
         </div>
       </div>
@@ -83,115 +45,145 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const isSignUp = ref(false)
-
-const signUpData = ref({
-  firstName: '',
-  email: '',
-  password: '',
+defineProps({
+  isSignUp: Boolean,
 })
-
-const signInData = ref({
-  email: '',
-  password: '',
-})
-
-function toggleForm() {
-  isSignUp.value = !isSignUp.value
-}
-
-function handleSubmit() {
-  if (isSignUp.value) {
-    // Логика регистрации
-    console.log('Регистрация:', signUpData.value)
-    // Здесь можно добавить валидацию, запрос на сервер и т.д.
-    alert(`Регистрация успешна для ${signUpData.value.email}`)
-  } else {
-    // Логика входа
-    console.log('Вход:', signInData.value)
-    // Аналогично: валидация, запрос на сервер и т.п.
-    alert(`Вход выполнен для ${signInData.value.email}`)
-  }
-}
 </script>
 
 <style scoped>
 .wrapper {
-  max-width: 100%;
-  width: 100vw;
-  min-height: 100vh;
-  overflow: hidden;
-  background-color: #f1f1f1;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: #eaeef6;
 }
 .container-auth {
-  max-width: 400px;
-  margin-top: 150px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.modal {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal__ttl h2 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.modal__input {
   display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0 auto;
 }
+.modal {
+  width: 100%;
+  height: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.modal__block {
+  display: block;
+  margin: 0 auto;
+  background-color: #ffffff;
+  max-width: 368px;
+  width: 100%;
+  padding: 50px 60px;
+  border-radius: 10px;
+  border: 0.7px solid #d4dbe5;
+  box-shadow: 0px 4px 67px -12px rgba(0, 0, 0, 0.13);
+}
+.modal__ttl h2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: -0.6px;
+  margin-bottom: 20px;
+}
+.modal__form-login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-.modal__btn-signup-ent,
+  & input:not(:last-child) {
+    margin-bottom: 7px;
+  }
+}
+.modal__input {
+  width: 100%;
+  min-width: 100%;
+  border-radius: 8px;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  outline: none;
+  padding: 10px 8px;
+
+  &::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: -0.28px;
+    color: #94a6be;
+  }
+}
 .modal__btn-enter {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #2f80ed;
-  color: white;
-  border: none;
+  height: 30px;
+  background-color: #565eef;
   border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  transition: background-color 0.3s ease;
-}
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  letter-spacing: -0.14px;
+  color: #ffffff;
 
-.modal__btn-signup-ent:hover,
-.modal__btn-enter:hover {
-  background-color: #1366d6;
+  & a {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
-
 .modal__form-group {
   text-align: center;
-  font-size: 0.9rem;
+
+  & p,
+  a {
+    color: rgba(148, 166, 190, 0.4);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.14px;
+  }
+
+  & a {
+    text-decoration: underline;
+  }
 }
 
-.modal__form-group p {
-  margin: 0;
-}
+@media screen and (max-width: 375px) {
+  .modal {
+    background-color: #ffffff;
 
-.link-button {
-  background: none;
-  border: none;
-  color: #2f80ed;
-  cursor: pointer;
-  padding: 0;
-  font: inherit;
-  text-decoration: underline;
-}
+    &__block {
+      max-width: 368px;
+      width: 100%;
+      padding: 0 16px;
+      border-radius: none;
+      border: none;
+      box-shadow: none;
+    }
 
-.link-button:hover {
-  color: #1366d6;
+    &__btn-signup-ent {
+      height: 40px;
+    }
+    &__btn-enter {
+      height: 40px;
+    }
+  }
 }
 </style>
