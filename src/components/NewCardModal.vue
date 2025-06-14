@@ -29,7 +29,7 @@
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar />
+            <BaseCalendar/>
           </div>
           <div class="pop-new-card__categories categories">
             <p class="categories__p subttl">Категория</p>
@@ -53,7 +53,9 @@
 </template>
 
 <script setup>
-import BaseCalendar from './BaseCalendar.vue'
+import BaseCalendar from './BaseCalendar.vue';
+
+
 </script>
 
 <style scoped>

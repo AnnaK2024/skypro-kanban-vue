@@ -127,7 +127,9 @@ function handleSubmit() {
 }
 .container-auth {
   max-width: 400px;
-  margin: 0 auto;
+  margin-top: 150px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .modal {

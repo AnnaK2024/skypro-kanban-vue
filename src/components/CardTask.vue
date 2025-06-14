@@ -43,7 +43,7 @@
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar />
+            <BaseCalendar/>
           </div>
           <div class="theme-down__categories theme-down">
             <p class="categories__p subttl">Категория</p>
@@ -79,7 +79,8 @@
 </template>
 
 <script setup>
-import BaseCalendar from '@/components/BaseCalendar.vue';
+import BaseCalendar from './BaseCalendar.vue';
+
 </script>
 
 <style scoped>

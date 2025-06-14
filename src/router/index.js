@@ -11,52 +11,52 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      children : [
-      {
-        path: '/card/id',
-        name: 'card',
-        component: () => import('@/views/EditTask.vue'),
-      },
-      {
-        path: '/card/add',
-        name: 'card/add',
-        component: () => import('@/views/NewCardModal.vue'),
-      },
-      {
-        path: '/exit',
-        name: 'exit',
-        component: () => import('@/views/ExitModal.vue'),
-      },
-      ]
+      children: [
+        {
+          path: '/card/:id',
+          name: 'card',
+          component: () => import('@/views/EditTaskView.vue'),
+        },
+        {
+          path: '/newCard',
+          name: 'newCard',
+          component: () => import('@/views/NewCardView.vue'),
+        },
+        {
+          path: '/exit',
+          name: 'exit',
+          component: () => import('@/views/ExitView.vue'),
+        },
+      ],
     },
     {
-      path: '/sign-in', // Маршрут для страницы входа
-      component: SignInView, // Отдельный компонент для авторизации
+      path: '/sign-in', 
+      component: SignInView, 
     },
     {
-      path: '/sign-up', // Маршрут для страницы регистрации
-      component: SignUpView, // Экран, позволяющий создать аккаунт
+      path: '/sign-up', 
+      component: SignUpView, 
     },
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundView,
     },
   ],
-    meta: {
-      requiresAuth: true, // Главная страница требует авторизации
-   },
+  meta: {
+    requiresAuth: true,
+  },
 })
 
 router.beforeEach((to, from, next) => {
-   // Берем токен
-   const token = localStorage.getItem('userInfo');
+  // Берем токен
+  const token = localStorage.getItem('userInfo')
 
-   // Проверяем, действительно ли на маршруте нужна авторизация и есть ли токен
-   if (to.meta.requiresAuth && !token) {
-      next('/sign-in'); // Если нет, уводим на страницу входа
-   } else {
-      next(); // Иначе пропускаем пользователя
-   }
-});
+  // Проверяем, действительно ли на маршруте нужна авторизация и есть ли токен
+  if (to.meta.requiresAuth && !token) {
+    next('/sign-in') // Если нет, уводим на страницу входа
+  } else {
+    next() // Иначе пропускаем пользователя
+  }
+})
 
 export default router

@@ -10,9 +10,11 @@
             <a href="" target="_self"><img src="@/assets/images/logo_dark.png" alt="logo" /></a>
           </div>
           <nav class="header__nav">
-            <button class="header__btn-main-new _hover01" id="btnMainNew">
-              <a href="#popNewCard">Создать новую задачу</a>
-            </button>
+            <RouterLink to="/newCard">
+              <button class="header__btn-main-new _hover01" id="btnMainNew">
+                Создать новую задачу
+              </button>
+            </RouterLink>
             <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal"
               >Ivan Ivanov</a
             >
@@ -28,20 +30,23 @@
                 <p>Темная тема</p>
                 <input type="checkbox" class="checkbox" name="checkbox" />
               </div>
-              <button type="button" class="_hover03"><a href="#popExit">Выйти</a></button>
+              <RouterLink to="/exit">
+              <button type="button" class="_hover03">Выйти</button>
+              </RouterLink>
             </div>
           </nav>
         </div>
       </div>
+      <RouterView />
     </header>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { RouterView } from 'vue-router'
 
 const isModalVisible = ref(false)
-
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
 }
@@ -198,7 +203,7 @@ const toggleModal = () => {
 .pop-user-set button a {
   color: #565eef;
 }
-.pop-user-set:target{
+.pop-user-set:target {
   display: block;
 }
 @media screen and (max-width: 495px) {
@@ -213,5 +218,5 @@ const toggleModal = () => {
     border-radius: 4px;
     margin-right: 0;
   }
-}  
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
- <AuthForm :onClick="hendleSignIn" />
+ <AuthForm :onClick="hendleSignIn"/>
 </template>
 
 <script setup lang="ts">
