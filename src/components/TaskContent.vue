@@ -1,50 +1,34 @@
 <template>
-  <main>
-    <RouterView />
-    <BaseHeader />
-    <NewCardModal />
-    <CardTaskModal/>
-    <EditTask />
-    <ExitModal />
-    <div class="main">
-      <div class="container">
-        <div class="main__block">
-          <div class="main__content">
-            <div v-if="loading">
-              <CardLoader />
-            </div>
-            <div v-else>
-              <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
-              <div v-else class="columns">
-                <TaskColumn
-                  v-for="status in statuses"
-                  :key="status"
-                  :status="status"
-                  :tasks="filteredTasks(status)"
-                />
-              </div>
+  <div class="main">
+    <div class="container">
+      <div class="main__block">
+        <div class="main__content">
+          <div v-if="loading">
+            <CardLoader />
+          </div>
+          <div v-else>
+            <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
+            <div v-else class="columns">
+              <TaskColumn
+                v-for="status in statuses"
+                :key="status"
+                :status="status"
+                :tasks="filteredTasks(status)"
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-
-import BaseHeader from '@/components/BaseHeader.vue'
-import NewCardModal from '@/components/NewCardModal.vue'
-import CardTaskModal from '@/components/CardTaskModal.vue'
-import EditTask from '@/components/CardTaskModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
-import ExitModal from '@/components/ExitModal.vue'
-
-import { tasks } from './mocks/tasks'
 import CardLoader from './CardLoader.vue'
-import { RouterView } from 'vue-router'
 
+import { ref, onMounted, computed } from 'vue'
+import { tasks } from './mocks/tasks'
 
 const loading = ref(true)
 const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
