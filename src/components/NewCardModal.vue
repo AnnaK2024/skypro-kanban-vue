@@ -1,22 +1,22 @@
 <!-- Карточка создания новой задачи -->
 <template>
-  <div class="pop-new-card" v-show="isVisible">
+  <div class="pop-new-card" v-if="isVisible" >
     <div class="pop-new-card__container">
       <div class="pop-new-card__block">
         <div class="pop-new-card__content">
           <h3 class="pop-new-card__ttl">Создание задачи</h3>
-          <a href="#" class="pop-new-card__close" @click.prevent="closeModal">&#10006;</a>
+          <RouterLink to="/"><div class="pop-new-card__close">&#10006;</div></RouterLink>
           <div class="pop-new-card__wrap">
             <form class="pop-new-card__form form-new" id="formNewCard" action="#">
               <div class="form-new__block">
                 <label for="formTitle" class="subttl">Название задачи</label>
                 <input
+                  ref="titleInput"
                   class="form-new__input"
                   type="text"
                   name="name"
                   id="formTitle"
                   placeholder="Введите название задачи..."
-                  autofocus
                 />
               </div>
               <div class="form-new__block">
@@ -29,7 +29,7 @@
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar/>
+            <BaseCalendar />
           </div>
           <div class="pop-new-card__categories categories">
             <p class="categories__p subttl">Категория</p>
@@ -53,27 +53,40 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import BaseCalendar from './BaseCalendar.vue';
+import { nextTick, ref, watch } from 'vue'
+import BaseCalendar from './BaseCalendar.vue'
+import { RouterLink, useRoute } from 'vue-router'
 
+// Состояние видимости модального окна
 const isVisible = ref(false)
 
-function openModal() {
-  isVisible.value = true
-}
+// Ссылка на input для установки фокуса
+const titleInput = ref(null)
 
-function closeModal() {
-  isVisible.value = false
-}
+// Получение текущего маршрута
+const route = useRoute()
 
-// Позволяет родителю вызывать openModal()
-defineExpose({ openModal })
+// Отслеживание изменения маршрута
+watch(
+  () => route.path,
+  async (newPath) => {
+    isVisible.value = newPath === '/newCard'
 
+    if (isVisible.value) {
+      // Дождаться отрисовки DOM
+      await nextTick()
+
+      // Установить фокус на input
+      titleInput.value?.focus()
+    }
+  },
+  { immediate: true } // Выполнить сразу при инициализации
+)
 </script>
 
 <style scoped>
 .pop-new-card {
-  display: flex;
+  display: block;
   width: 100%;
   min-width: 375px;
   height: 100%;
@@ -92,7 +105,7 @@ defineExpose({ openModal })
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.1);
 }
 .pop-new-card__block {
   display: block;

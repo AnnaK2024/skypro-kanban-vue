@@ -23,7 +23,6 @@
               placeholder="Эл. почта"
             >
             <input
-              :class="[{error: errorFields?.password}]"
               class="modal__input"
               type="password"
               name="password"

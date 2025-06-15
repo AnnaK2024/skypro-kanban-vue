@@ -1,5 +1,5 @@
 <template>
- <AuthForm :handleSubmit="handleSignIn" />
+ <AuthForm :onClick="handleSignIn" />
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,6 @@ async function handleSignIn(e) {
     e.preventDefault()
     localStorage.setItem('userInfo', 'true')
     router.push('/')
-    
 }
 </script>
 

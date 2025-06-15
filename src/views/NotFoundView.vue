@@ -77,6 +77,7 @@ import { RouterLink } from 'vue-router';
    font-weight: bold;
    transition: transform 0.3s, box-shadow 0.3s;
    margin-top: 2rem;
+   cursor: pointer;
 }
 
 .home-button:hover {
