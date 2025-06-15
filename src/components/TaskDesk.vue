@@ -1,9 +1,11 @@
 <template>
   <main>
-    <ExitModal />
+    <RouterView />
     <BaseHeader />
     <NewCardModal />
-    <BaseTask />
+    <CardTaskModal/>
+    <EditTask />
+    <ExitModal />
     <div class="main">
       <div class="container">
         <div class="main__block">
@@ -12,9 +14,7 @@
               <CardLoader />
             </div>
             <div v-else>
-              <div v-if="!hasTasks" class="no-tasks">
-                Задач нет
-              </div>
+              <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
               <div v-else class="columns">
                 <TaskColumn
                   v-for="status in statuses"
@@ -35,13 +35,16 @@
 import { ref, onMounted, computed } from 'vue'
 
 import BaseHeader from '@/components/BaseHeader.vue'
-import BaseTask from '@/components/BaseTask.vue'
-import ExitModal from '@/components/ExitModal.vue'
 import NewCardModal from '@/components/NewCardModal.vue'
+import CardTaskModal from '@/components/CardTaskModal.vue'
+import EditTask from '@/components/CardTaskModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
+import ExitModal from '@/components/ExitModal.vue'
 
 import { tasks } from './mocks/tasks'
 import CardLoader from './CardLoader.vue'
+import { RouterView } from 'vue-router'
+
 
 const loading = ref(true)
 const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
@@ -55,7 +58,7 @@ const hasTasks = computed(() => tasks.length > 0)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 1000)
 })
 </script>
 

@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import TaskCard from './TaskCard.vue'
+import TaskCard from './TaskCard.vue';
 
 defineProps({
   status: { type: String, required: true },
