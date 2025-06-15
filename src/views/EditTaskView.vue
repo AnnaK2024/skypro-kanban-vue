@@ -1,11 +1,9 @@
 <template>
-<CardTask />
+  <CardTaskModal />
 </template>
 
 <script setup>
-import CardTask from '@/components/CardTask.vue';
-
+import CardTaskModal from '@/components/CardTaskModal.vue';
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

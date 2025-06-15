@@ -1,6 +1,6 @@
 <!-- Редактирование задачи из карточки -->
 <template>
-  <div class="pop-browse" id="popBrowse">
+  <div class="pop-browse" id="popBrowse" v-if="currentTask">
     <div class="pop-browse__container">
       <div class="pop-browse__block">
         <div class="pop-browse__content">
@@ -60,7 +60,9 @@
                 <a href="#">Удалить задачу</a>
               </button>
             </div>
-            <button class="btn-browse__close _btn-bg _hover01"><a href="#">Закрыть</a></button>
+            <RouterLink to="/">
+              <button class="btn-browse__close _btn-bg _hover01">Закрыть</button>
+            </RouterLink>
           </div>
           <div class="pop-browse__btn-edit _hide">
             <div class="btn-group">
@@ -70,7 +72,9 @@
                 <a href="#">Удалить задачу</a>
               </button>
             </div>
-            <button class="btn-edit__close _btn-bg _hover01"><a href="#">Закрыть</a></button>
+            <RouterLink to="/">
+              <button class="btn-edit__close _btn-bg _hover01">Закрыть</button>
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -80,20 +84,21 @@
 
 <script setup>
 import BaseCalendar from './BaseCalendar.vue'
-import { useRoute } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { tasks } from './mocks/tasks'
 
 const route = useRoute()
 
-const task = computed(() => {
-  return tasks.value.find((t) => t.id === route.params.id) || { name: '', translation: '' }
+const currentTask = computed(() => {
+  const id = Number(route.params.id)
+  return tasks.find((task) => task.id === id) || null
 })
 </script>
 
 <style scoped>
 .pop-browse {
-  display: none;
+  display: flex;
   width: 100%;
   height: 100%;
   min-width: 375px;
@@ -112,7 +117,7 @@ const task = computed(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.1);
 }
 .pop-browse__block {
   display: block;

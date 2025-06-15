@@ -13,14 +13,14 @@ const router = createRouter({
       component: HomeView,
       children: [
         {
-          path: '/card/:id',
-          name: 'card',
-          component: () => import('@/views/EditTaskView.vue'),
-        },
-        {
           path: '/newCard',
           name: 'newCard',
           component: () => import('@/views/NewCardView.vue'),
+        },
+        {
+          path: '/card/:id',
+          name: 'card',
+          component: () => import('@/views/EditTaskView.vue'),
         },
         {
           path: '/exit',

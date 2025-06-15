@@ -3,6 +3,7 @@
     <RouterView />
     <BaseHeader />
     <NewCardModal />
+    <CardTaskModal/>
     <EditTask />
     <ExitModal />
     <div class="main">
@@ -35,13 +36,15 @@ import { ref, onMounted, computed } from 'vue'
 
 import BaseHeader from '@/components/BaseHeader.vue'
 import NewCardModal from '@/components/NewCardModal.vue'
-import EditTask from '@/components/CardTask.vue'
+import CardTaskModal from '@/components/CardTaskModal.vue'
+import EditTask from '@/components/CardTaskModal.vue'
 import TaskColumn from '@/components/TaskColumn.vue'
 import ExitModal from '@/components/ExitModal.vue'
 
 import { tasks } from './mocks/tasks'
 import CardLoader from './CardLoader.vue'
 import { RouterView } from 'vue-router'
+
 
 const loading = ref(true)
 const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
@@ -55,7 +58,7 @@ const hasTasks = computed(() => tasks.length > 0)
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
-  }, 3000)
+  }, 1000)
 })
 </script>
 

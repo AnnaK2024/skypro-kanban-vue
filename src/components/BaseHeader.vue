@@ -15,9 +15,7 @@
                 Создать новую задачу
               </button>
             </RouterLink>
-            <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal"
-              >Ivan Ivanov</a
-            >
+            <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal">Ivan Ivanov</a>
             <div
               class="header__pop-user-set pop-user-set"
               v-if="isModalVisible"
@@ -44,12 +42,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 
 const isModalVisible = ref(false)
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
 }
+
 const router = useRouter()
 
 function logout(e) {

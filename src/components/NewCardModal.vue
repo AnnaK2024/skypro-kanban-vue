@@ -1,11 +1,11 @@
 <!-- Карточка создания новой задачи -->
 <template>
-  <div class="pop-new-card" id="popNewCard">
+  <div class="pop-new-card" v-show="isVisible">
     <div class="pop-new-card__container">
       <div class="pop-new-card__block">
         <div class="pop-new-card__content">
           <h3 class="pop-new-card__ttl">Создание задачи</h3>
-          <a href="#" class="pop-new-card__close">&#10006;</a>
+          <a href="#" class="pop-new-card__close" @click.prevent="closeModal">&#10006;</a>
           <div class="pop-new-card__wrap">
             <form class="pop-new-card__form form-new" id="formNewCard" action="#">
               <div class="form-new__block">
@@ -53,14 +53,27 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import BaseCalendar from './BaseCalendar.vue';
 
+const isVisible = ref(false)
+
+function openModal() {
+  isVisible.value = true
+}
+
+function closeModal() {
+  isVisible.value = false
+}
+
+// Позволяет родителю вызывать openModal()
+defineExpose({ openModal })
 
 </script>
 
 <style scoped>
 .pop-new-card {
-  display: none;
+  display: flex;
   width: 100%;
   min-width: 375px;
   height: 100%;
