@@ -8,6 +8,7 @@
           </div>
           <form class="modal__form-login" id="formLogUp" action="#" @submit="handleSubmit">
             <input
+              :class="{ error: errors.first-name }"
               v-show="isSignUp"
               class="modal__input first-name"
               type="text"
@@ -18,6 +19,7 @@
               @focus="clearError('first-name')"
             />
             <input
+              :class="{ error: errors.login }"
               class="modal__input"
               type="text"
               name="login"
@@ -27,6 +29,7 @@
               @focus="clearError('login')"
             />
             <input
+              :class="{ error: errors.password }"
               class="modal__input"
               type="password"
               name="password"
