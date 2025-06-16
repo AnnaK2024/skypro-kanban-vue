@@ -37,7 +37,7 @@
             />
             <p v-show="error" class="error-text">{{ error }}</p>
 
-            <BaseButton>
+            <BaseButton class="modal__btn-enter _hover01" id="btnEnter">
               {{ isSignUp ? 'Зарегистрироваться' : 'Войти' }}
             </BaseButton>
             <div class="modal__form-group">
@@ -187,6 +187,50 @@ async function handleSubmit(event) {
 
   & input:not(:last-child) {
     margin-bottom: 7px;
+  }
+}
+.modal__input {
+  width: 100%;
+  min-width: 100%;
+  border-radius: 8px;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  outline: none;
+  padding: 10px 8px;
+
+  &::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: -0.28px;
+    color: #94a6be;
+  }
+}
+.modal__btn-enter {
+  width: 100%;
+  height: 30px;
+  background-color: #565eef;
+  border-radius: 4px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  letter-spacing: -0.14px;
+  color: #ffffff;
+
+  & a {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .modal__form-group {

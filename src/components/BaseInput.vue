@@ -32,6 +32,4 @@ defineProps({
 const model = defineModel()
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
