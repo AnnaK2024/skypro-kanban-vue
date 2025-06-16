@@ -1,4 +1,9 @@
-export const tasks =  [
+export const tasks =  []
+
+export function getTask() {
+  return tasks
+}
+
 
   // {
   //   id: 1,
@@ -36,8 +41,3 @@ export const tasks =  [
   //   status: 'Готово'
   // }
   
-]
-
-export function getTask() {
-  return tasks
-}

@@ -7,38 +7,38 @@
             <h2>{{ isSignUp ? 'Регистрация' : 'Вход' }}</h2>
           </div>
           <form class="modal__form-login" id="formLogUp" action="#" @submit="handleSubmit">
-            <input
-              :class="{ error: errors.first-name }"
-              v-show="isSignUp"
-              class="modal__input first-name"
-              type="text"
-              name="first-name"
-              id="first-name"
-              placeholder="Имя"
-              v-model="formData.name"
-              @focus="clearError('first-name')"
-            />
-            <input
-              :class="{ error: errors.login }"
-              class="modal__input"
-              type="text"
-              name="login"
-              id="formlogin"
-              placeholder="Эл. почта"
-              v-model="formData.login"
-              @focus="clearError('login')"
-            />
-            <input
-              :class="{ error: errors.password }"
-              class="modal__input"
-              type="password"
-              name="password"
-              id="formpassword"
-              placeholder="Пароль"
-              v-model="formData.password"
-              @focus="clearError('password')"
-            />
-            <p v-show="error" class="error-text">{{ error }}</p>
+            <div class="modal__input">
+              <BaseInput
+                :class="{ error: errors.first - name }"
+                v-show="isSignUp"
+                class="modal__input name"
+                type="text"
+                name="name"
+                id="formname"
+                placeholder="Имя"
+                v-model="formData.name"
+                @focus="clearError('first-name')"
+              />
+              <BaseInput
+                :class="{ error: errors.login }"
+                type="text"
+                name="login"
+                id="formlogin"
+                placeholder="Эл. почта"
+                v-model="formData.login"
+                @focus="clearError('login')"
+              />
+              <BaseInput
+                :class="{ error: errors.password }"
+                type="password"
+                name="password"
+                id="formpassword"
+                placeholder="Пароль"
+                v-model="formData.password"
+                @focus="clearError('password')"
+              />
+              <p v-show="error" class="error-text">{{ error }}</p>
+            </div>
 
             <button class="modal__btn-enter _hover01" id="btnEnter">
               <a href="../main.html">Войти</a>
@@ -60,6 +60,7 @@
 import { signIn, signUp } from '@/services/auth'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import BaseInput from './BaseInput.vue'
 
 const router = useRouter()
 const props = defineProps({

@@ -2,24 +2,24 @@
   <main>
     <RouterView />
     <BaseHeader />
-    <TaskContent :taskArray="taskArray" :error="error" />
+    <TaskContent :loading="loading" :taskArray="taskArray" :error="error" />
   </main>
 </template>
 
 <script setup lang="ts">
+import { RouterView } from 'vue-router'
 import BaseHeader from '@/components/BaseHeader.vue';
 import TaskContent from '@/components/TaskContent.vue';
 
 import { ref, onMounted} from 'vue'
-import { RouterView } from 'vue-router'
 import { fetchTask } from '@/services/api'
 
+const loading = ref(false)
+// ref(false) - флажок, показывающий, что идёт загрузка
 const taskArray  = ref([])
 // ref([]) - массив для задач 
 const error = ref('')  
 // ref('') - строка для текста ошибки
-const loading = ref(false)
-// ref(false) - флажок, показывающий, что идёт загрузка
 
 const getTasks = async () => {  
    try {  
