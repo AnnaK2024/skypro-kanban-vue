@@ -1,5 +1,5 @@
 <template>
-  <button :class="['button', type ?? 'primary']">
+  <button :class="['button', type ]">
     <RouterLink to="/">
       <slot></slot>
     </RouterLink>

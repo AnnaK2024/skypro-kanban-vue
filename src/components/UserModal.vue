@@ -18,7 +18,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 const isModalVisible = ref(false)
 const toggleModal = () => {
