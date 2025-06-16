@@ -28,11 +28,10 @@ defineProps({
     default: 'text',
   },
 })
-// defineProps() позволяет этому компоненту получать все нужные данные
-// для каждого поля ввода (id, name, placeholder, type)
 
 const model = defineModel()
-// Эта строка говорит компоненту, что оно будет использоваться с v-model
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

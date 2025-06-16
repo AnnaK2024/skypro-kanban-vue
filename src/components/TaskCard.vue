@@ -1,5 +1,5 @@
 <template>
-  <div class="cards__item">
+  <div v-if="card" class="cards__item">
     <div class="cards__card card">
       <div class="card__group">
         <div class="card__theme" :class="getThemeClass(card.topic)">
@@ -57,7 +57,6 @@
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
-// Определяем свойства компонента
 const { card } = defineProps({
   card: {
     type: Object,
@@ -66,7 +65,6 @@ const { card } = defineProps({
   loading: Boolean,
 })
 
-// Функция для получения класса темы карточки
 const getThemeClass = (topic) => {
   switch (topic) {
     case 'Research':

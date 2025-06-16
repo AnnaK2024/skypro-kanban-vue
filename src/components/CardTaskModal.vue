@@ -85,15 +85,28 @@
 <script setup>
 import BaseCalendar from './BaseCalendar.vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { computed } from 'vue'
-import { tasks } from './mocks/tasks'
+import { computed, ref } from 'vue'
+import { getTask } from './mocks/tasks'
+
+
+const tasks = ref (getTask())
 
 const route = useRoute()
 
 const currentTask = computed(() => {
-  const id = Number(route.params.id)
-  return tasks.find((task) => task.id === id) || null
-})
+  const id = route.params.id;
+  console.log('Route Params:', route.params); // Для отладки
+  const taskId = Number(id);
+
+  if (isNaN(taskId)) {
+    console.error('ID is NaN');
+    return null;
+  }
+
+  const task = tasks.value.find((task) => task.id === taskId);
+  console.log('Found Task:', task); // Для отладки
+  return task || null;
+});
 </script>
 
 <style scoped>

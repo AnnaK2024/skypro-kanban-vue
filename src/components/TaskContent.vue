@@ -3,19 +3,14 @@
     <div class="container">
       <div class="main__block">
         <div class="main__content">
-          <div v-if="loading">
-            <CardLoader />
-          </div>
-          <div v-else>
-            <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
-            <div v-else class="columns">
-              <TaskColumn
-                v-for="status in statuses"
-                :key="status"
-                :status="status"
-                :tasks="filteredTasks(status)"
-              />
-            </div>
+          <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
+          <div v-else class="columns">
+            <TaskColumn
+              v-for="status in statuses"
+              :key="status"
+              :status="status"
+              :tasks="filteredTasks(status)"
+            />
           </div>
         </div>
       </div>
@@ -25,25 +20,21 @@
 
 <script setup>
 import TaskColumn from '@/components/TaskColumn.vue'
-import CardLoader from './CardLoader.vue'
+import { computed } from 'vue'
 
-import { ref, onMounted, computed } from 'vue'
-import { tasks } from './mocks/tasks'
+const props = defineProps({
+  tasks: { type: Array, require: true },
+  loading: Boolean,
+  erorr: String,
+})
 
-const loading = ref(true)
 const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
 
 const filteredTasks = (status) => {
-  return tasks.filter((task) => task.status === status)
+  return props.tasks.filter((task) => task.status === status)
 }
 
-const hasTasks = computed(() => tasks.length > 0)
-
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false
-  }, 1000)
-})
+const hasTasks = computed(() => props.tasks.length > 0)
 </script>
 
 <style scoped>

@@ -1,4 +1,4 @@
-export const tasks =  []
+const tasks =  []
 
 export function getTask() {
   return tasks
