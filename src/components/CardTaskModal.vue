@@ -88,14 +88,16 @@ import { RouterLink, useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 import { getTask } from './mocks/tasks'
 
-const tasks = ref (getTask())
+const tasks = ref(getTask())
 
 const route = useRoute()
 
-const task = computed(
-  () => tasks.value.find((t) => t.id === route.params.id) || { topic: '', title: '' },
-)
+const task = computed(() => {
+  const id = route.params.id
+  return tasks.value.find((t) => String(t.id) === id) || { topic: '', title: '' }
+})
 </script>
+
 
 <style scoped>
 .pop-browse {

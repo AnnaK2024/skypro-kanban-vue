@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = 'https://wedev-api.sky.pro/api/kanban'  
+export const API_URL = 'https://wedev-api.sky.pro/api/kanban'  
 // Эта переменная содержит базовый URL для запросов к нашему серверу
 
 export async function fetchTask({ token }) {  
