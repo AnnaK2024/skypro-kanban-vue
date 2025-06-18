@@ -8,9 +8,9 @@
           </div>
           <form class="pop-exit__form" id="formExit" action="#">
             <div class="pop-exit__form-group">
-              <button class="pop-exit__exit-yes _hover01" id="exitYes">
+              <BaseButton class="pop-exit__exit-yes _hover01" id="exitYes">
                 <a href="modal/signin.html">Да, выйти</a>
-              </button>
+              </BaseButton>
               <button class="pop-exit__exit-no _hover03" id="exitNo">
                 <a href="main.html">Нет, остаться</a>
               </button>
@@ -22,7 +22,10 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import BaseButton from './BaseButton.vue';
+
+</script>
 
 <style scoped>
 .pop-exit {

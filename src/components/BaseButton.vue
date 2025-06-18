@@ -1,9 +1,8 @@
 <template>
-  <button :class="['button', type ]">
-    <RouterLink to="/">
+   <button
+      :class="['button', type ?? 'primary']">
       <slot></slot>
-    </RouterLink>
-  </button>
+   </button>
 </template>
 
 <script setup>
