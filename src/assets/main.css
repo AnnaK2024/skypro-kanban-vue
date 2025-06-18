@@ -15,25 +15,8 @@ a:visited {
   cursor: pointer;
 }
 
-button,
-._btn {
-  cursor: pointer;
-  outline: none;
-}
-
 ul li {
   list-style: none;
-}
-
-@keyframes card-animation {
-  0% {
-    height: 0;
-    opacity: 0;
-  }
-  100% {
-    height: auto;
-    opacity: 1;
-  }
 }
 html,
 body {
@@ -104,11 +87,11 @@ body {
   opacity: 1 !important;
 }
 
-.pop-wrap {
+/* .pop-wrap {
   position: relative;
   top: 0;
   left: 0;
-}
+} */
 /* 
 .pop-exit {
   display: none;

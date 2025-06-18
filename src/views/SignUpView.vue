@@ -1,5 +1,5 @@
 <template>
- <AuthForm :onClick="handleSignUp" :isSignUp="true"/>
+ <AuthForm :handleSubmit="handleSignUp" :isSignUp="true"/>
 </template>
 
 <script setup lang="ts">

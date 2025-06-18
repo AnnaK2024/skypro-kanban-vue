@@ -249,7 +249,13 @@ async function handleSubmit(event) {
     text-decoration: underline;
   }
 }
+.error {
+  border: 1px solid red;
+}
 
+.error-text {
+  color: red;
+}
 @media screen and (max-width: 375px) {
   .modal {
     background-color: #ffffff;

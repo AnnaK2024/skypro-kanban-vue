@@ -35,6 +35,11 @@ function logout(e) {
 </script>
 
 <style scoped>
+.pop-wrap {
+  position: relative;
+  top: 0;
+  left: 0;
+}
 .pop-exit {
   display: block;
   width: 100%;

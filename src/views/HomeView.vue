@@ -18,13 +18,12 @@ import { ref, onMounted } from 'vue'
 import { fetchTask } from '@/services/api'
 import CardLoader from '@/components/CardLoader.vue'
 
-const loading = ref(false)
+const loading = ref(true)
 const tasks = ref([])
 const error = ref('')
 
 const getTasks = async () => {
   try {
-    loading.value = true
     const data = await fetchTask({
       token: 'bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck',
       // Поскольку авторизация не реализована, передаем токен вручную
