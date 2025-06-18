@@ -11,26 +11,20 @@
       <input type="checkbox" class="checkbox" name="checkbox" />
     </div>
     <RouterLink to="/exit">
-      <button @click="logout" type="button" class="_hover03">Выйти</button>
+      <BaseButton class="_hover03">Выйти</BaseButton>
     </RouterLink>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink} from 'vue-router'
+import BaseButton from './BaseButton.vue'
 
 const isModalVisible = ref(false)
+
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
-}
-
-const router = useRouter()
-
-function logout(e) {
-  e.preventDefault()
-  localStorage.removeItem('userInfo')
-  router.push('/sign-in')
 }
 </script>
 
@@ -140,5 +134,14 @@ function logout(e) {
 }
 .pop-user-set:target {
   display: block;
+}
+._hover03:hover {
+  background-color: #565eef;
+  color: white;
+}
+._hover03:active {
+  background-color: #565eef;
+  color: white;
+  outline: none;
 }
 </style>
