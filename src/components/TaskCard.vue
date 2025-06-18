@@ -82,20 +82,38 @@ const getThemeClass = (topic) => {
 <style scoped>
 .cards__item {
   padding: 5px;
-  animation-name: card-animation;
-  animation-duration: 500ms;
-  animation-timing-function: linear;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation-name: card-fade-slide;
+  animation-duration: 400ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
 }
-@keyframes card-animation {
-   0% {
-    height: 0;
+
+.cards__item:nth-child(1) {
+  animation-delay: 0ms;
+}
+.cards__item:nth-child(2) {
+  animation-delay: 150ms;
+}
+.cards__item:nth-child(3) {
+  animation-delay: 300ms;
+}
+.cards__item:nth-child(4) {
+  animation-delay: 450ms;
+}
+
+@keyframes card-fade-slide {
+  0% {
     opacity: 0;
+    transform: translateY(-20px);
   }
   100% {
-    height: auto;
     opacity: 1;
+    transform: translateY(0);
   }
-} 
+}
+
 .cards__card {
   width: 220px;
   height: 130px;

@@ -1,11 +1,11 @@
 <!-- Редактирование задачи из карточки -->
 <template>
-  <div class="pop-browse" id="popBrowse" v-if="currentTask">
+  <div class="pop-browse" id="popBrowse">
     <div class="pop-browse__container">
       <div class="pop-browse__block">
         <div class="pop-browse__content">
           <div class="pop-browse__top-block">
-            <h3 class="pop-browse__ttl">{{ task.title }}</h3>
+            <h3 class="pop-browse__ttl">Название задачи</h3>
             <div class="categories__theme theme-top _orange _active-category">
               <p class="_orange">Web Design</p>
             </div>
@@ -88,25 +88,13 @@ import { RouterLink, useRoute } from 'vue-router'
 import { computed, ref } from 'vue'
 import { getTask } from './mocks/tasks'
 
-
 const tasks = ref (getTask())
 
 const route = useRoute()
 
-const currentTask = computed(() => {
-  const id = route.params.id;
-  console.log('Route Params:', route.params); // Для отладки
-  const taskId = Number(id);
-
-  if (isNaN(taskId)) {
-    console.error('ID is NaN');
-    return null;
-  }
-
-  const task = tasks.value.find((task) => task.id === taskId);
-  console.log('Found Task:', task); // Для отладки
-  return task || null;
-});
+const task = computed(
+  () => tasks.value.find((t) => t.id === route.params.id) || { topic: '', title: '' },
+)
 </script>
 
 <style scoped>

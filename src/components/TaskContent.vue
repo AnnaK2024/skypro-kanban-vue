@@ -40,7 +40,7 @@ const hasTasks = computed(() => props.tasks.length > 0)
 <style scoped>
 .main {
   width: 100%;
-  height: 100vh;
+  height: auto;
   background-color: #eaeef6;
 }
 .container {

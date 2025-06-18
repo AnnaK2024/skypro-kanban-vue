@@ -1,11 +1,9 @@
 <template>
   <main>
-    <RouterView />
     <BaseHeader />
-    <div>
-      <CardLoader v-if="loading" />
-      <TaskContent v-else :tasks="tasks" :error="error" />
-    </div>
+    <CardLoader v-if="loading" />
+    <TaskContent v-else :tasks="tasks" :error="error" />
+    <RouterView />
   </main>
 </template>
 
@@ -24,6 +22,7 @@ const error = ref('')
 
 const getTasks = async () => {
   try {
+    loading.value = true
     const data = await fetchTask({
       token: 'bgc0b8awbwas6g5g5k5o5s5w606g37w3cc3bo3b83k39s3co3c83c03ck',
       // Поскольку авторизация не реализована, передаем токен вручную
