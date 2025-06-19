@@ -12,7 +12,7 @@ import { RouterView } from 'vue-router'
 import BaseHeader from '@/components/BaseHeader.vue'
 import TaskContent from '@/components/TaskContent.vue'
 
-import { ref, onMounted } from 'vue'
+import { ref, provide, inject, watch } from 'vue'
 import { fetchTask } from '@/services/api'
 import CardLoader from '@/components/CardLoader.vue'
 
@@ -20,24 +20,29 @@ const loading = ref(true)
 const tasks = ref([])
 const error = ref('')
 
+// Здесь нам потребуется токен из коробки auth
+const {userInfo} = inject('auth')
+
+// Передаём всем потомкам главной страницы данные о словах, загрузке и ошибке
+provide('tasksData', { tasks, loading, error })
+
 const getTasks = async () => {
+  if (!userInfo.value?.token) return
   try {
     loading.value = true
-    const token= localStorage.getItem('userInfo') || ''
 
     const data = await fetchTask({
-      token,
+      token: userInfo.value.token,
     })
-
     if (data) tasks.value = data
   } catch (err) {
-    error.value = err.message
+    error.value = err.message || String(err)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(getTasks)
+watch(userInfo,getTasks, {immediate: true})
 </script>
 
 <style scoped></style>
