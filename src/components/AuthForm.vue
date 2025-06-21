@@ -6,35 +6,45 @@
           <div class="modal__ttl">
             <h2>{{ isSignUp ? 'Регистрация' : 'Вход' }}</h2>
           </div>
-          <form class="modal__form-login" id="formLogUp" action="#">
-            <input
+          <form class="modal__form-login" id="formLogUp" action="#" @submit="handleSubmit">
+            <BaseInput
+              :class="{ error: errors.name }"
               v-show="isSignUp"
-              class="modal__input first-name"
+              class="modal__input name"
               type="text"
-              name="first-name"
-              id="first-name"
+              name="name"
+              id="name"
               placeholder="Имя"
-            >
-            <input
+              v-model="formData.name"
+            />
+            <BaseInput
+              :class="{ error: errors.login }"
               class="modal__input"
               type="text"
               name="login"
               id="formlogin"
               placeholder="Эл. почта"
-            >
-            <input
+              v-model="formData.login"
+            />
+            <BaseInput
+              :class="{ error: errors.password }"
               class="modal__input"
               type="password"
               name="password"
               id="formpassword"
               placeholder="Пароль"
-            >
-            <button class="modal__btn-enter _hover01" id="btnEnter">
-              <a href="../main.html">Войти</a>
-            </button>
+              v-model="formData.password"
+            />
+            <p v-show="error" class="error-text">{{ error }}</p>
+
+            <BaseButton class="modal__btn-enter _hover01" id="btnEnter">
+              {{ isSignUp ? 'Зарегистрироваться' : 'Войти' }}
+            </BaseButton>
             <div class="modal__form-group">
               <p>{{ isSignUp ? 'Уже есть аккаунт?' : 'Нужно зарегистрироваться?' }}</p>
-              <RouterLink :to="isSignUp ? '/sign-in' : '/sign-up'">{{ isSignUp ? 'Войдите здесь' : 'Регистрируйтесь здесь' }}</RouterLink>
+              <RouterLink :to="isSignUp ? '/sign-in' : '/sign-up'">{{
+                isSignUp ? 'Войдите здесь' : 'Регистрируйтесь здесь'
+              }}</RouterLink>
             </div>
           </form>
         </div>
@@ -44,9 +54,85 @@
 </template>
 
 <script setup>
-defineProps({
+import { signIn, signUp } from '@/services/auth'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import BaseInput from './BaseInput.vue'
+import BaseButton from './BaseButton.vue'
+
+const router = useRouter()
+const props = defineProps({
   isSignUp: Boolean,
 })
+
+const formData = ref({
+  name: '',
+  login: '',
+  password: '',
+})
+
+const errors = ref({
+  name: false,
+  login: false,
+  password: false,
+})
+
+const error = ref('')
+
+function validateForm() {
+  let isValid = true
+  error.value = ''
+
+  // Сбросим все ошибки
+  errors.value.name = false
+  errors.value.login = false
+  errors.value.password = false
+
+  // Проверка имени (только для регистрации)
+  if (props.isSignUp && !formData.value.name.trim()) {
+    errors.value.name = true
+    isValid = false
+  }
+
+  // Проверка логина (эл. почты)
+  if (!formData.value.login.trim()) {
+    errors.value.login = true
+    isValid = false
+  }
+
+  // Проверка пароля
+  if (!formData.value.password.trim()) {
+    errors.value.password = true
+    isValid = false
+  }
+
+  // Если есть ошибки, установим общее сообщение
+  if (!isValid) {
+    error.value = 'Пожалуйста, заполните все обязательные поля'
+  }
+
+  return isValid
+}
+
+async function handleSubmit(event) {
+  event.preventDefault()
+  // Валидация формы перед отправкой
+  if (!validateForm()) {
+    return
+  }
+
+  try {
+    const data = props.isSignUp
+      ? await signUp(formData.value)
+      : await signIn({ login: formData.value.login, password: formData.value.password })
+    if (data) {
+      localStorage.setItem('userInfo', JSON.stringify(data))
+      router.push('/')
+    }
+  } catch (err) {
+    error.value = err.message
+  }
+}
 </script>
 
 <style scoped>
@@ -163,7 +249,13 @@ defineProps({
     text-decoration: underline;
   }
 }
+.error {
+  border: 1px solid red;
+}
 
+.error-text {
+  color: red;
+}
 @media screen and (max-width: 375px) {
   .modal {
     background-color: #ffffff;

@@ -27,6 +27,10 @@ const router = createRouter({
           name: 'exit',
           component: () => import('@/views/ExitView.vue'),
         },
+        {
+          path: '/:pathMatch(.*)*',
+          component: NotFoundView,
+        },
       ],
       meta: {
         requiresAuth: true,

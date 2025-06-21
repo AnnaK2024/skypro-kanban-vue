@@ -1,6 +1,6 @@
 <!-- Редактирование задачи из карточки -->
 <template>
-  <div class="pop-browse" id="popBrowse" v-if="currentTask">
+  <div class="pop-browse" id="popBrowse">
     <div class="pop-browse__container">
       <div class="pop-browse__block">
         <div class="pop-browse__content">
@@ -85,16 +85,19 @@
 <script setup>
 import BaseCalendar from './BaseCalendar.vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { computed } from 'vue'
-import { tasks } from './mocks/tasks'
+import { computed, ref } from 'vue'
+import { getTask } from './mocks/tasks'
+
+const tasks = ref(getTask())
 
 const route = useRoute()
 
-const currentTask = computed(() => {
-  const id = Number(route.params.id)
-  return tasks.find((task) => task.id === id) || null
+const task = computed(() => {
+  const id = route.params.id
+  return tasks.value.find((t) => String(t.id) === id) || { topic: '', title: '' }
 })
 </script>
+
 
 <style scoped>
 .pop-browse {

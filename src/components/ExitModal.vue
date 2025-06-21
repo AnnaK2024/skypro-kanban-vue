@@ -1,32 +1,47 @@
 <template>
-  <div>
-    <div class="pop-exit" id="popExit">
-      <div class="pop-exit__container">
-        <div class="pop-exit__block">
-          <div class="pop-exit__ttl">
-            <h2>Выйти из аккаунта?</h2>
-          </div>
-          <form class="pop-exit__form" id="formExit" action="#">
-            <div class="pop-exit__form-group">
-              <button class="pop-exit__exit-yes _hover01" id="exitYes">
-                <a href="modal/signin.html">Да, выйти</a>
-              </button>
-              <button class="pop-exit__exit-no _hover03" id="exitNo">
-                <a href="main.html">Нет, остаться</a>
-              </button>
-            </div>
-          </form>
+  <div class="pop-exit" id="popExit">
+    <div class="pop-exit__container">
+      <div class="pop-exit__block">
+        <div class="pop-exit__ttl">
+          <h2>Выйти из аккаунта?</h2>
         </div>
+        <form class="pop-exit__form" id="formExit" action="#">
+          <div class="pop-exit__form-group">
+            <RouterLink to="/sign-in">
+              <BaseButton @click="logout" class="pop-exit__exit-yes _hover01">Да, выйти</BaseButton>
+            </RouterLink>
+
+            <RouterLink to="/">
+              <BaseButton class="pop-exit__exit-no _hover03">Нет, остаться</BaseButton>
+            </RouterLink>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { RouterLink, useRouter } from 'vue-router'
+import BaseButton from './BaseButton.vue'
+
+const router = useRouter()
+
+function logout(e) {
+  e.preventDefault()
+  localStorage.removeItem('userInfo')
+  router.push('/sign-in')
+}
+</script>
 
 <style scoped>
+.pop-wrap {
+  position: relative;
+  top: 0;
+  left: 0;
+}
 .pop-exit {
-  display: none;
+  display: block;
   width: 100%;
   height: 100%;
   min-width: 320px;
@@ -105,7 +120,7 @@
   line-height: 21px;
   font-weight: 500;
   letter-spacing: -0.14px;
-  color: #ffffff;
+  color: #565eef;
 }
 .pop-exit__exit-no a {
   width: 100%;
@@ -119,9 +134,9 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
-.pop-exit:target{
+.pop-exit:target {
   display: block;
 }
 @media only screen and (max-width: 375px) {
@@ -141,6 +156,5 @@
   .pop-exit__form-group {
     display: block;
   }
-} 
+}
 </style>
-
