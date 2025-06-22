@@ -1,12 +1,10 @@
 <template>
   <div class="wrapper">
     <RouterView />
-    // Обязательно пишем тут RouterView // Так как контент страниц будет передаваться через этот
-    компонент
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { onMounted, provide, ref } from 'vue'
 import { RouterView } from 'vue-router'
 
@@ -36,9 +34,14 @@ function removeUserInfo() {
 // Передаем наши данные во всё приложение:
 // на главную страницу, на страницы входа и регистрации
 provide('auth', {
-  user: userInfo,
-  setUser: setUserInfo,
-  removeUser: removeUserInfo,
+  userInfo,
+  setUserInfo,
+  removeUserInfo,
+})
+console.log('Provided auth:', {
+  userInfo,
+  setUserInfo,
+  removeUserInfo,
 })
 
 onMounted(() => {

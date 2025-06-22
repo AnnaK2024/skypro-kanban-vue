@@ -8,47 +8,48 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '',
+    {
+      path: '/',
       component: AppLayout,
-      children:[
+      children: [
         {
-          path: '/',
+          path: '',
           name: 'home',
           component: HomeView,
           children: [
             {
-              path: '/newCard',
+              path: 'newCard',
               name: 'newCard',
               component: () => import('@/views/NewCardView.vue'),
             },
             {
-              path: '/card/:id',
+              path: 'card/:_id',
               name: 'card',
               component: () => import('@/views/EditTaskView.vue'),
             },
             {
-              path: '/exit',
+              path: 'exit',
               name: 'exit',
               component: () => import('@/views/ExitView.vue'),
             },
             {
-              path: '/:pathMatch(.*)*',
+              path: ':pathMatch(.*)*',
               component: NotFoundView,
             },
           ],
+          meta: {
+            requiresAuth: true,
+          },
         },
-      ],    
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/sign-in',
-      component: SignInView,
-    },
-    {
-      path: '/sign-up',
-      component: SignUpView,
+        {
+          path: '/sign-in',
+          component: SignInView,
+        },
+        {
+          path: '/sign-up',
+          component: SignUpView,
+        },
+      ],
     },
     {
       path: '/:pathMatch(.*)*',

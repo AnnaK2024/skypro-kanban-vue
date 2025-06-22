@@ -71,7 +71,7 @@ export async function editTask({ token, id, task }) {
    }
 }
 
-export async function deleteTask({ token, id }) {
+export async function deleteTaskAPI ({ token, id }) {
    try {
       // Пытаемся получить карточку по ее id на сервере
       const data = await axios.delete(API_URL + id, {

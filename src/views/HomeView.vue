@@ -7,13 +7,13 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { RouterView } from 'vue-router'
-import BaseHeader from '@/components/BaseHeader.vue'
-import TaskContent from '@/components/TaskContent.vue'
-
 import { ref, provide, inject, watch } from 'vue'
 import { fetchTask } from '@/services/api'
+
+import BaseHeader from '@/components/BaseHeader.vue'
+import TaskContent from '@/components/TaskContent.vue'
 import CardLoader from '@/components/CardLoader.vue'
 
 const loading = ref(true)
@@ -42,7 +42,7 @@ const getTasks = async () => {
   }
 }
 
-watch(userInfo,getTasks, {immediate: true})
+watch(userInfo, getTasks, {immediate: true})
 </script>
 
 <style scoped></style>

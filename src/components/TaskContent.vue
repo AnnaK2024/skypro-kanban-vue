@@ -65,8 +65,9 @@ const hasTasks = computed(() => props.tasks.length > 0)
   text-align: center;
   font-size: 4rem;
   font-weight: bold;
-  background: linear-gradient(270deg, #8f98a3, #ced3dc, #a6bdda);
+  background: linear-gradient(270deg, #565eef, #5b5e86, #bbbdee);
   background-size: 600% 600%;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradientShift 5s ease infinite;

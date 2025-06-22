@@ -1,6 +1,6 @@
 <!-- Карточка создания новой задачи -->
 <template>
-  <div class="pop-new-card" v-if="isVisible" >
+  <div class="pop-new-card" v-if="isVisible">
     <div class="pop-new-card__container">
       <div class="pop-new-card__block">
         <div class="pop-new-card__content">
@@ -17,6 +17,7 @@
                   name="name"
                   id="formTitle"
                   placeholder="Введите название задачи..."
+                  v-model="form.title"
                 />
               </div>
               <div class="form-new__block">
@@ -26,6 +27,7 @@
                   name="text"
                   id="textArea"
                   placeholder="Введите описание задачи..."
+                  v-model="form.description"
                 ></textarea>
               </div>
             </form>
@@ -34,18 +36,32 @@
           <div class="pop-new-card__categories categories">
             <p class="categories__p subttl">Категория</p>
             <div class="categories__themes">
-              <div class="categories__theme _orange _active-category">
+              <div
+                class="categories__theme _orange"
+                :class="{ '_active-category': form.category === 'Web Design' }"
+                @click="form.category = 'Web Design'"
+              >
                 <p class="_orange">Web Design</p>
               </div>
-              <div class="categories__theme _green">
+              <div
+                class="categories__theme _green"
+                :class="{ '_active-category': form.category === 'Research' }"
+                @click="form.category = 'Research'"
+              >
                 <p class="_green">Research</p>
               </div>
-              <div class="categories__theme _purple">
+              <div
+                class="categories__theme _purple"
+                :class="{ '_active-category': form.category === 'Copywriting' }"
+                @click="form.category = 'Copywriting'"
+              >
                 <p class="_purple">Copywriting</p>
               </div>
             </div>
           </div>
-          <button class="form-new__create _hover01" id="btnCreate">Создать задачу</button>
+          <BaseButton class="form-new__create _hover01" id="btnCreate" @click.prevent="createTask">
+            Создать задачу
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -53,36 +69,63 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import BaseCalendar from './BaseCalendar.vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import BaseButton from './BaseButton.vue'
 
-// Состояние видимости модального окна
 const isVisible = ref(false)
-
-// Ссылка на input для установки фокуса
 const titleInput = ref(null)
-
-// Получение текущего маршрута
 const route = useRoute()
+const router = useRouter()
 
-// Отслеживание изменения маршрута
+const form = reactive({
+  title: '',
+  description: '',
+  category: 'Web Design',
+  dueDate: null
+})
+
 watch(
   () => route.path,
   async (newPath) => {
     isVisible.value = newPath === '/newCard'
-
     if (isVisible.value) {
-      // Дождаться отрисовки DOM
       await nextTick()
-
-      // Установить фокус на input
       titleInput.value?.focus()
     }
   },
-  { immediate: true } // Выполнить сразу при инициализации
+  { immediate: true }
 )
+
+const emit = defineEmits(['create-task'])
+
+function createTask() {
+  if (!form.title.trim()) {
+    alert('Название задачи обязательно')
+    return
+  }
+
+  const newTask = {
+    id: Date.now(),
+    title: form.title.trim(),
+    description: form.description.trim(),
+    category: form.category,
+    dueDate: form.dueDate,
+    status: 'todo'
+  }
+
+  emit('create-task', newTask)
+
+  form.title = ''
+  form.description = ''
+  form.category = 'Web Design'
+  form.dueDate = null
+
+  router.push('/')
+}
 </script>
+
 
 <style scoped>
 .pop-new-card {

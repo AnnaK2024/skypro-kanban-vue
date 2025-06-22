@@ -1,11 +1,12 @@
 <template>
-    <div v-if="card" class="cards__item">
+  <div v-if="card" class="cards">
+    <div class="cards__item">
       <div class="cards__card card">
         <div class="card__group">
           <div class="card__theme" :class="getThemeClass(card.topic)">
             <p>{{ card.topic }}</p>
           </div>
-          <RouterLink :to="'/card/' + card.id">
+          <RouterLink :to="'/card/' + card._id">
             <div class="card__btn">
               <div></div>
               <div></div>
@@ -51,13 +52,14 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
-const { card } = defineProps({
+const { card } = defineProps( {
   card: {
     type: Object,
     required: true,
@@ -80,6 +82,11 @@ const getThemeClass = (topic) => {
 </script>
 
 <style scoped>
+.cards {
+  width: 100%;
+  display: block;
+  position: relative;
+}
 .cards__item {
   padding: 5px;
   opacity: 0;
