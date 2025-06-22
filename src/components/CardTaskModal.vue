@@ -5,7 +5,7 @@
       <div class="pop-browse__block">
         <div class="pop-browse__content">
           <div class="pop-browse__top-block">
-            <h3 class="pop-browse__ttl">{{task.title }}</h3>
+            <h3 class="pop-browse__ttl">{{task.title || 'Название задачи'  }}</h3>
             <div class="categories__theme theme-top _orange _active-category">
               <p>{{ task.topic || 'Без категории' }}</p>
             </div>
