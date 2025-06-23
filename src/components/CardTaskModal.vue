@@ -109,6 +109,9 @@ import { deleteTaskAPI, editTask} from '@/services/api'
 import router from '@/router'
 
 const route = useRoute()
+const id = route.params.id
+console.log(id) // должен показать id из URL
+
 const { tasks } = inject('tasksData')
 const { userInfo } = inject('auth')
 
@@ -133,7 +136,7 @@ const statusLabelsMap = {
 }
 
 const task = computed(() => {
-  const t = tasks.value.find((t) => t._id === route.params.id)
+  const t = tasks.value.find((t) => t.id === route.params.id)
   if (!t) {
     return {
       topic: '',
@@ -208,7 +211,7 @@ const deleteTask = async () => {
       id: route.params.id,
     })
     // Обновляем список задач (например, удаляем из tasks)
-    tasks.value = tasks.value.filter((t) => t._id !== route.params.id)
+    tasks.value = tasks.value.filter((t) => t.id !== route.params.id)
     // Переходим на главную страницу
     router.push('/')
   } catch (error) {

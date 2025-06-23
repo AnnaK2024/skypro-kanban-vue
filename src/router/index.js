@@ -23,7 +23,7 @@ const router = createRouter({
               component: () => import('@/views/NewCardView.vue'),
             },
             {
-              path: 'card/:_id',
+              path: 'card/:id',
               name: 'card',
               component: () => import('@/views/EditTaskView.vue'),
             },

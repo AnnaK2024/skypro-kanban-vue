@@ -6,7 +6,7 @@
           <div class="card__theme" :class="getThemeClass(card.topic)">
             <p>{{ card.topic }}</p>
           </div>
-          <RouterLink :to="'/card/' + card._id">
+          <RouterLink :to="{ name: 'card', params: { id: card.id } }">
             <div class="card__btn">
               <div></div>
               <div></div>
