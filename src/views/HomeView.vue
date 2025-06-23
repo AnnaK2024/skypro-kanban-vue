@@ -16,7 +16,7 @@ import BaseHeader from '@/components/BaseHeader.vue'
 import TaskContent from '@/components/TaskContent.vue'
 import CardLoader from '@/components/CardLoader.vue'
 
-const loading = ref(true)
+const loading = ref(false)
 const tasks = ref([])
 const error = ref('')
 
@@ -27,13 +27,15 @@ const {userInfo} = inject('auth')
 provide('tasksData', { tasks, loading, error })
 
 const getTasks = async () => {
+  console.log(userInfo)
   if (!userInfo.value?.token) return
   try {
     loading.value = true
 
     const data = await fetchTask({
-      token: userInfo.value.token,
+      token: userInfo.value.token
     })
+    console.log(data)
     if (data) tasks.value = data
   } catch (err) {
     error.value = err.message || String(err)

@@ -6,7 +6,7 @@
           <div class="card__theme" :class="getThemeClass(card.topic)">
             <p>{{ card.topic }}</p>
           </div>
-          <RouterLink :to="{ name: 'card', params: { id: card.id } }">
+          <RouterLink :to="'/card/' + card._id">
             <div class="card__btn">
               <div></div>
               <div></div>
@@ -59,12 +59,14 @@
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
-const { card } = defineProps( {
+const { card } = defineProps({
   card: {
-    type: Object,
-    required: true,
+    topic: { type: String, require: true },
+    title: { type: String, require: true },
+    date: { type: String, require: true },
+    status: { type: String, require: true },
+    _id: { type: String, required: true },
   },
-  loading: Boolean,
 })
 
 const getThemeClass = (topic) => {

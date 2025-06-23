@@ -18,22 +18,22 @@ const router = createRouter({
           component: HomeView,
           children: [
             {
-              path: 'newCard',
+              path: '/newCard',
               name: 'newCard',
               component: () => import('@/views/NewCardView.vue'),
             },
             {
-              path: 'card/:id',
+              path: '/card/:id',
               name: 'card',
               component: () => import('@/views/EditTaskView.vue'),
             },
             {
-              path: 'exit',
+              path: '/exit',
               name: 'exit',
               component: () => import('@/views/ExitView.vue'),
             },
             {
-              path: ':pathMatch(.*)*',
+              path: '/:pathMatch(.*)*',
               component: NotFoundView,
             },
           ],

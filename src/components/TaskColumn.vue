@@ -3,7 +3,7 @@
     <div class="column__title">
       <p>{{ status }}</p>
     </div>
-    <div class="cards">
+    <div>
       <div v-for="card in tasks" :key="card.id">
         <TaskCard :card="card" />
       </div>
@@ -36,11 +36,6 @@ defineProps({
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
-}
-.cards {
-  width: 100%;
-  display: block;
-  position: relative;
 }
 @media screen and (max-width: 1200px) {
   .main__column {

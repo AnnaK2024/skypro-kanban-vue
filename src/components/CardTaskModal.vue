@@ -6,7 +6,7 @@
         <div class="pop-browse__content">
           <div class="pop-browse__top-block">
             <h3 class="pop-browse__ttl">{{task.title || 'Название задачи'  }}</h3>
-            <div class="categories__theme theme-top _orange _active-category">
+            <div class="categories__theme theme-top _orange _active-category" :class="getThemeClass(task.topic)">
               <p>{{ task.topic || 'Без категории' }}</p>
             </div>
           </div>
@@ -109,11 +109,12 @@ import { deleteTaskAPI, editTask} from '@/services/api'
 import router from '@/router'
 
 const route = useRoute()
-const id = route.params.id
-console.log(id) // должен показать id из URL
 
 const { tasks } = inject('tasksData')
 const { userInfo } = inject('auth')
+
+const id = route.params.id
+console.log(id) // должен показать id из URL
 
 const isEditing = ref(false)
 
@@ -136,7 +137,7 @@ const statusLabelsMap = {
 }
 
 const task = computed(() => {
-  const t = tasks.value.find((t) => t.id === route.params.id)
+  const t = tasks.value.find((t) => t._id === route.params.id)
   if (!t) {
     return {
       topic: '',
@@ -211,11 +212,24 @@ const deleteTask = async () => {
       id: route.params.id,
     })
     // Обновляем список задач (например, удаляем из tasks)
-    tasks.value = tasks.value.filter((t) => t.id !== route.params.id)
+    tasks.value = tasks.value.filter((t) => t._id !== route.params.id)
     // Переходим на главную страницу
     router.push('/')
   } catch (error) {
     console.error('Ошибка при удалении задачи:', error.message)
+  }
+}
+
+const getThemeClass = (topic) => {
+  switch (topic) {
+    case 'Research':
+      return '_green'
+    case 'Web Design':
+      return '_orange'
+    case 'Copywriting':
+      return '_purple'
+    default:
+      return ''
   }
 }
 </script>
