@@ -61,7 +61,7 @@ import BaseInput from './BaseInput.vue'
 import BaseButton from './BaseButton.vue'
 
 // Вытаскиваем функцию из провайдера с помощью inject
-const {setUserInfo} = inject('auth')
+const { setUserInfo } = inject('auth')
 
 const router = useRouter()
 const props = defineProps({
@@ -138,7 +138,7 @@ async function handleSubmit(event) {
 }
 </script>
 
-<style scoped>
+<style scoped >
 .container-auth {
   display: block;
   width: 100vw;

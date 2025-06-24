@@ -69,10 +69,13 @@
 </template>
 
 <script setup>
-import { nextTick, reactive, ref, watch } from 'vue'
+import { inject, nextTick, reactive, ref, watch } from 'vue'
 import BaseCalendar from './BaseCalendar.vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import BaseButton from './BaseButton.vue'
+
+const tasksData = inject('tasksData')
+const addTask = tasksData?.addTask
 
 const isVisible = ref(false)
 const titleInput = ref(null)
@@ -98,8 +101,6 @@ watch(
   { immediate: true }
 )
 
-const emit = defineEmits(['create-task'])
-
 function createTask() {
   if (!form.title.trim()) {
     alert('Название задачи обязательно')
@@ -112,11 +113,16 @@ function createTask() {
     description: form.description.trim(),
     category: form.category,
     dueDate: form.dueDate,
-    status: 'todo'
+    status: 'Без статуса'
   }
 
-  emit('create-task', newTask)
+  if (addTask) {
+    addTask(newTask)  // вызываем напрямую
+  } else {
+    console.warn('addTask не найден')
+  }
 
+  // Сброс формы
   form.title = ''
   form.description = ''
   form.category = 'Web Design'

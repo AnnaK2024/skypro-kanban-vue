@@ -183,10 +183,15 @@ const cancelEditing = () => {
   isEditing.value = false
 }
 
-// Сохранение изменений
 const saveChanges = async () => {
   try {
-    const updatedTasks = await editTask({
+    console.log('Отправляем обновлённую задачу:', {
+      token: userInfo.value.token,
+      id: route.params.id,
+      task: editableTask,
+    });
+
+    const updatedTask = await editTask({
       token: userInfo.value.token,
       id: route.params.id,
       task: {
@@ -196,22 +201,25 @@ const saveChanges = async () => {
         description: editableTask.description,
         date: editableTask.date,
       },
-    })
-    tasks.value = updatedTasks
-    isEditing.value = false
+    });
+
+    console.log('Получена обновлённая задача:', updatedTask);
+
+    tasks.value = tasks.value.map(t => t._id === updatedTask._id ? updatedTask : t);
+    isEditing.value = false;
   } catch (error) {
-    console.error('Ошибка при сохранении изменений:', error.message)
+    console.error('Ошибка при сохранении изменений:', error);
   }
 }
 
 // Удаление задачи
 const deleteTask = async () => {
   try {
-    await deleteTaskAPI ({
+    await deleteTaskAPI({
       token: userInfo.value.token,
       id: route.params.id,
     })
-    // Обновляем список задач (например, удаляем из tasks)
+    // Удаляем задачу из списка
     tasks.value = tasks.value.filter((t) => t._id !== route.params.id)
     // Переходим на главную страницу
     router.push('/')
