@@ -118,7 +118,6 @@ console.log(id) // должен показать id из URL
 
 const isEditing = ref(false)
 
-// Все возможные статусы задачи
 const allStatuses = [
   { label: 'Без статуса', value: '' },
   { label: 'Нужно сделать', value: 'todo' },
@@ -127,13 +126,9 @@ const allStatuses = [
   { label: 'Готово', value: 'done' },
 ]
 
-// Получаем текущую задачу из списка
-const statusLabelsMap = {
-  '': 'Без статуса',
-  todo: 'Нужно сделать',
-  inProgress: 'В работе',
-  testing: 'Тестирование',
-  done: 'Готово',
+function getStatusInfo(statusValue) {
+  const statusItem = allStatuses.find(s => s.value === statusValue)
+  return statusItem || { label: 'Без статуса', value: '' }
 }
 
 const task = computed(() => {
@@ -148,9 +143,10 @@ const task = computed(() => {
       statusLabel: 'Без статуса',
     }
   }
+  const statusInfo = getStatusInfo(t.status)
   return {
     ...t,
-    statusLabel: statusLabelsMap[t.status] || 'Без статуса',
+    statusLabel: statusInfo.label,
   }
 })
 
@@ -184,7 +180,6 @@ const cancelEditing = () => {
 }
 
 const saveChanges = async () => {
-  console.log('Перед вызовом editTask id =', route.params.id)
   try {
     const response = await editTask({
       token: userInfo.value.token,
@@ -198,10 +193,18 @@ const saveChanges = async () => {
       },
     });
 
-    // response содержит { tasks: [...] }
-    tasks.value = response.tasks;
+    if (response.tasks) {
+      tasks.value = response.tasks;
+    } else if (response.task) {
+      const updatedTask = response.task;
+      const index = tasks.value.findIndex(t => t._id === updatedTask._id);
+      if (index !== -1) {
+        tasks.value.splice(index, 1, updatedTask);
+      }
+    }
 
     isEditing.value = false;
+    router.push('/')
   } catch (error) {
     console.error('Ошибка при сохранении изменений:', error);
   }

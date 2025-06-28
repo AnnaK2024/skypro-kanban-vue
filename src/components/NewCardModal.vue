@@ -86,7 +86,7 @@ const form = reactive({
   title: '',
   description: '',
   topic: 'Web Design',
-  dueDate: null,
+  dueDate: new Date().toISOString(),
 })
 
 watch(

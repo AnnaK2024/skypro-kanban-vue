@@ -1,7 +1,7 @@
 <template>
   <div class="main__column">
     <div class="column__title">
-      <p>{{ status }}</p>
+      <p>{{ statusLabel }}</p>
     </div>
     <div>
       <div v-for="card in tasks" :key="card._id">
@@ -15,8 +15,9 @@
 import TaskCard from './TaskCard.vue';
 
 defineProps({
-  status: { type: String, required: true },
-  tasks: { type: Array, required: true },
+  status: String,
+  statusLabel: String,
+  tasks: Array,
 })
 </script>
 

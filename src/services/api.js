@@ -9,6 +9,7 @@ export async function fetchTask({ token }) {
     const data = await axios.get(API_URL, {
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': '',
       },
     })
     return data.data.tasks
@@ -26,6 +27,7 @@ export async function postTask({ token, task }) {
     const data = await axios.post(API_URL, task, {
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': '',
       },
     })
     // Возвращаем обновленный список задач
@@ -42,6 +44,7 @@ export async function getTask({ token, id }) {
     const data = await axios.get(API_URL + id, {
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': '',
       },
     })
     // Возвращаем обновленную карточку задачи
@@ -58,6 +61,7 @@ export async function editTask({ token, id, task }) {
     const response = await axios.put(`${API_URL}/${id}`, task, {
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': '',
       },
     })
     return response.data
@@ -71,6 +75,7 @@ export async function deleteTaskAPI({ token, id }) {
     const data = await axios.delete(`${API_URL}/${id}`, {
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': '',
       },
     })
     return data.data.tasks // или data.data, в зависимости от API
