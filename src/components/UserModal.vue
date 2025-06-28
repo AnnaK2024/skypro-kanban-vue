@@ -1,8 +1,17 @@
 <template>
-  <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal">
+  <a
+    href="#user-set-target"
+    class="header__user _hover02"
+    @click.prevent="toggleModal"
+    ref="buttonRef"
+  >
     {{ userName }}
   </a>
-  <div class="header__pop-user-set pop-user-set" v-if="isModalVisible">
+  <div
+    class="header__pop-user-set pop-user-set"
+    v-if="isModalVisible"
+    ref="modalRef"
+  >
     <p class="pop-user-set__name">{{ userName || 'Имя не указано' }}</p>
     <p class="pop-user-set__mail">{{ userLogin }}</p>
     <div class="pop-user-set__theme">
@@ -16,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue'
+import { ref, inject, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseButton from './BaseButton.vue'
 
@@ -29,6 +38,32 @@ const toggleModal = () => {
 
 const userName = computed(() => auth?.userInfo?.value?.name || 'Профиль')
 const userLogin = computed(() => auth?.userInfo?.value?.login || 'email@example.com')
+
+// refs для элементов
+const modalRef = ref(null)
+const buttonRef = ref(null)
+
+const onClickOutside = (event) => {
+  const modalEl = modalRef.value
+  const buttonEl = buttonRef.value
+  if (!modalEl || !buttonEl) return
+
+  // если клик вне модалки и вне кнопки — закрываем модалку
+  if (
+    !modalEl.contains(event.target) &&
+    !buttonEl.contains(event.target)
+  ) {
+    isModalVisible.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', onClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', onClickOutside)
+})
 </script>
 
 <style scoped>
