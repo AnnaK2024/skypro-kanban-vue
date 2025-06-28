@@ -144,7 +144,7 @@ const task = computed(() => {
       title: '',
       status: '',
       description: '',
-      date: null,
+      date: new Date().toISOString(),
       statusLabel: 'Без статуса',
     }
   }
@@ -160,7 +160,7 @@ const editableTask = reactive({
   topic: '',
   status: '',
   description: '',
-  date: null,
+  date: new Date().toISOString(),
 })
 
 // При входе в режим редактирования копируем данные
@@ -169,7 +169,7 @@ const startEditing = () => {
   editableTask.topic = task.value.topic
   editableTask.status = task.value.status || ''
   editableTask.description = task.value.description || ''
-  editableTask.date = task.value.date || null
+  editableTask.date = task.value.date || ''
   isEditing.value = true
 }
 
@@ -184,14 +184,9 @@ const cancelEditing = () => {
 }
 
 const saveChanges = async () => {
+  console.log('Перед вызовом editTask id =', route.params.id)
   try {
-    console.log('Отправляем обновлённую задачу:', {
-      token: userInfo.value.token,
-      id: route.params.id,
-      task: editableTask,
-    });
-
-    const updatedTask = await editTask({
+    const response = await editTask({
       token: userInfo.value.token,
       id: route.params.id,
       task: {
@@ -203,14 +198,15 @@ const saveChanges = async () => {
       },
     });
 
-    console.log('Получена обновлённая задача:', updatedTask);
+    // response содержит { tasks: [...] }
+    tasks.value = response.tasks;
 
-    tasks.value = tasks.value.map(t => t._id === updatedTask._id ? updatedTask : t);
     isEditing.value = false;
   } catch (error) {
     console.error('Ошибка при сохранении изменений:', error);
   }
 }
+
 
 // Удаление задачи
 const deleteTask = async () => {

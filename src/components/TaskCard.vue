@@ -1,5 +1,5 @@
 <template>
-  <div v-if="card" class="cards">
+  <div v-if="card != null" class="cards">
     <div class="cards__item">
       <div class="cards__card card">
         <div class="card__group">
@@ -59,15 +59,10 @@
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
-const { card } = defineProps({
-  card: {
-    topic: { type: String, require: true },
-    title: { type: String, require: true },
-    date: { type: String, require: true },
-    status: { type: String, require: true },
-    _id: { type: String, required: true },
-  },
+const props = defineProps({
+  card: Object,
 })
+const card = props.card
 
 const getThemeClass = (topic) => {
   switch (topic) {

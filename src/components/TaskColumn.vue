@@ -4,7 +4,7 @@
       <p>{{ status }}</p>
     </div>
     <div>
-      <div v-for="card in tasks" :key="card.id">
+      <div v-for="card in tasks" :key="card._id">
         <TaskCard :card="card" />
       </div>
     </div>

@@ -38,22 +38,22 @@
             <div class="categories__themes">
               <div
                 class="categories__theme _orange"
-                :class="{ '_active-category': form.category === 'Web Design' }"
-                @click="form.category = 'Web Design'"
+                :class="{ '_active-category': form.topic === 'Web Design' }"
+                @click="selectCategory('Web Design')"
               >
                 <p class="_orange">Web Design</p>
               </div>
               <div
                 class="categories__theme _green"
-                :class="{ '_active-category': form.category === 'Research' }"
-                @click="form.category = 'Research'"
+                :class="{ '_active-category': form.topic === 'Research' }"
+                @click="selectCategory('Research')"
               >
                 <p class="_green">Research</p>
               </div>
               <div
                 class="categories__theme _purple"
-                :class="{ '_active-category': form.category === 'Copywriting' }"
-                @click="form.category = 'Copywriting'"
+                :class="{ '_active-category': form.topic === 'Copywriting' }"
+                @click="selectCategory('Copywriting')"
               >
                 <p class="_purple">Copywriting</p>
               </div>
@@ -70,8 +70,8 @@
 
 <script setup>
 import { inject, nextTick, reactive, ref, watch } from 'vue'
-import BaseCalendar from './BaseCalendar.vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import BaseCalendar from './BaseCalendar.vue'
 import BaseButton from './BaseButton.vue'
 
 const tasksData = inject('tasksData')
@@ -85,8 +85,8 @@ const router = useRouter()
 const form = reactive({
   title: '',
   description: '',
-  category: 'Web Design',
-  dueDate: null
+  topic: 'Web Design',
+  dueDate: null,
 })
 
 watch(
@@ -98,11 +98,17 @@ watch(
       titleInput.value?.focus()
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
+
+function selectCategory(topic) {
+  form.topic= topic
+  console.log('Selected topic:', topic)
+}
 
 function createTask() {
   if (!form.title.trim()) {
+    console.log('Creating task with topic:', form.topic)
     alert('Название задачи обязательно')
     return
   }
@@ -111,13 +117,13 @@ function createTask() {
     id: Date.now(),
     title: form.title.trim(),
     description: form.description.trim(),
-    category: form.category,
+    topic: form.topic,
     dueDate: form.dueDate,
-    status: 'Без статуса'
+    status: 'Без статуса',
   }
 
   if (addTask) {
-    addTask(newTask)  // вызываем напрямую
+    addTask(newTask) // вызываем напрямую
   } else {
     console.warn('addTask не найден')
   }
@@ -125,13 +131,12 @@ function createTask() {
   // Сброс формы
   form.title = ''
   form.description = ''
-  form.category = 'Web Design'
+  form.topic = 'Web Design'
   form.dueDate = null
 
   router.push('/')
 }
 </script>
-
 
 <style scoped>
 .pop-new-card {

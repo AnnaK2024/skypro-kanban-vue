@@ -47,6 +47,7 @@ async function addTask(newTask) {
     newTask.status = 'Без статуса'
     if (!userInfo.value?.token) throw new Error('Нет токена')
     const updatedTasks = await postTask({ token: userInfo.value.token, task: newTask })
+    console.log('Обновленный список задач от сервера:', updatedTasks)
     tasks.value = updatedTasks
   } catch (e) {
     error.value = e.message || String(e)
