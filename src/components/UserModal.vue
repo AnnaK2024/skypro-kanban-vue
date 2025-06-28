@@ -1,10 +1,10 @@
 <template>
   <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal">
-    {{ auth.userInfo?.name || 'Профиль' }}
+    {{ userName }}
   </a>
   <div class="header__pop-user-set pop-user-set" v-if="isModalVisible">
-    <p class="pop-user-set__name">{{ auth.userInfo?.name || 'Имя не указано' }}</p>
-    <p class="pop-user-set__mail">{{ auth.userInfo?.login || 'email@example.com' }}</p>
+    <p class="pop-user-set__name">{{ userName || 'Имя не указано' }}</p>
+    <p class="pop-user-set__mail">{{ userLogin }}</p>
     <div class="pop-user-set__theme">
       <p>Темная тема</p>
       <input type="checkbox" class="checkbox" name="checkbox" />
@@ -16,17 +16,19 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseButton from './BaseButton.vue'
 
-// Получаем из provide/inject объект auth с userInfo
 const auth = inject('auth')
 
 const isModalVisible = ref(false)
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
 }
+
+const userName = computed(() => auth?.userInfo?.value?.name || 'Профиль')
+const userLogin = computed(() => auth?.userInfo?.value?.login || 'email@example.com')
 </script>
 
 <style scoped>
