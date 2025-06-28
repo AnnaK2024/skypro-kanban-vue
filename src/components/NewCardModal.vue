@@ -132,7 +132,7 @@ function createTask() {
   form.title = ''
   form.description = ''
   form.topic = 'Web Design'
-  form.dueDate = null
+  form.dueDate = new Date().toISOString(),
 
   router.push('/')
 }

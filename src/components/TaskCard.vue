@@ -47,7 +47,7 @@
                 </clipPath>
               </defs>
             </svg>
-            <p>{{ card.date }}</p>
+            <p>{{ formattedDate }}</p>
           </div>
         </div>
       </div>
@@ -56,13 +56,25 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { format, parseISO } from 'date-fns'
+import { computed, defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const props = defineProps({
   card: Object,
 })
 const card = props.card
+
+// Форматируем дату, предполагая, что card.date — это ISO строка
+const formattedDate = computed(() => {
+  if (!card || !card.date) return ''
+  try {
+    const parsedDate = parseISO(card.date)
+    return format(parsedDate, 'dd.MM.yyyy') // например, 24.06.2024
+  } catch {
+    return card.date // если формат невалидный, выводим как есть
+  }
+})
 
 const getThemeClass = (topic) => {
   switch (topic) {
