@@ -7,16 +7,19 @@
   >
     {{ userName }}
   </a>
-  <div
-    class="header__pop-user-set pop-user-set"
-    v-if="isModalVisible"
-    ref="modalRef"
-  >
+  <div class="header__pop-user-set pop-user-set" v-if="isModalVisible" ref="modalRef">
     <p class="pop-user-set__name">{{ userName || 'Имя не указано' }}</p>
     <p class="pop-user-set__mail">{{ userLogin }}</p>
     <div class="pop-user-set__theme">
       <p>Темная тема</p>
-      <input type="checkbox" class="checkbox" name="checkbox" />
+      <input
+        type="checkbox"
+        class="checkbox"
+        name="checkbox"
+        v-model="isDarkTheme"
+        id="theme-toggle"
+      />
+      <label for="theme-toggle" class="visually-hidden"></label>
     </div>
     <RouterLink to="/exit">
       <BaseButton class="_hover03">Выйти</BaseButton>
@@ -25,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, inject, computed, onMounted, onUnmounted } from 'vue'
+import { ref, inject, computed, onMounted, onUnmounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseButton from './BaseButton.vue'
 
@@ -49,20 +52,37 @@ const onClickOutside = (event) => {
   if (!modalEl || !buttonEl) return
 
   // если клик вне модалки и вне кнопки — закрываем модалку
-  if (
-    !modalEl.contains(event.target) &&
-    !buttonEl.contains(event.target)
-  ) {
+  if (!modalEl.contains(event.target) && !buttonEl.contains(event.target)) {
     isModalVisible.value = false
   }
 }
 
+// --- Тема ---
+const isDarkTheme = ref(false)
+
+// При монтировании проверяем сохранённую тему
 onMounted(() => {
   document.addEventListener('click', onClickOutside)
+
+  const savedTheme = localStorage.getItem('dark-theme')
+  if (savedTheme === 'true') {
+    isDarkTheme.value = true
+    document.body.classList.add('dark-theme')
+  }
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside)
+})
+
+// Следим за изменением темы и меняем класс у body
+watch(isDarkTheme, (newVal) => {
+  if (newVal) {
+    document.body.classList.add('dark-theme')
+  } else {
+    document.body.classList.remove('dark-theme')
+  }
+  localStorage.setItem('dark-theme', newVal)
 })
 </script>
 
