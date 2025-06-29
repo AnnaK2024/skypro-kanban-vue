@@ -6,4 +6,4 @@
 import CardTaskModal from '@/components/CardTaskModal.vue';
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped ></style>

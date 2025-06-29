@@ -34,7 +34,7 @@ function logout(e) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pop-wrap {
   position: relative;
   top: 0;

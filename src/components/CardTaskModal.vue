@@ -1,28 +1,27 @@
-<!-- Редактирование задачи из карточки -->
 <template>
   <div class="pop-browse">
-    <div class="pop-browse__container">
+    <div class="pop-browse__container" @click="closeOnBackdropClick">
       <div class="pop-browse__block">
         <div class="pop-browse__content">
           <div class="pop-browse__top-block">
-            <h3 class="pop-browse__ttl">{{task.title || 'Название задачи'  }}</h3>
-            <div class="categories__theme theme-top _orange _active-category" :class="getThemeClass(task.topic)">
+            <h3 class="pop-browse__ttl">{{ task.title || 'Название задачи' }}</h3>
+            <div
+              class="categories__theme theme-top _orange _active-category"
+              :class="getThemeClass(task.topic)"
+            >
               <p>{{ task.topic || 'Без категории' }}</p>
             </div>
           </div>
 
-          <!-- Статус -->
           <div class="pop-browse__status status">
             <p class="status__p subttl">Статус</p>
 
-            <!-- Режим просмотра: показываем только текущий статус -->
             <div v-if="!isEditing" class="status__themes">
               <div class="status__theme _gray _selected">
                 <p>{{ task.statusLabel || 'Без статуса' }}</p>
               </div>
             </div>
 
-            <!-- Режим редактирования: показываем все статусы -->
             <div v-else class="status__themes">
               <div
                 v-for="(statusItem, index) in allStatuses"
@@ -41,7 +40,6 @@
             </div>
           </div>
 
-          <!-- Описание и календарь -->
           <div class="pop-browse__wrap">
             <form class="pop-browse__form form-browse" id="formBrowseCard" @submit.prevent>
               <div class="form-browse__block">
@@ -52,16 +50,14 @@
                   id="textArea01"
                   :readonly="!isEditing"
                   placeholder="Введите описание задачи..."
-                  v-model="editableTask.description"
+                  v-model="task.description"
                 ></textarea>
               </div>
             </form>
 
-            <!-- Предполагается, что BaseCalendar умеет принимать v-model для даты -->
             <BaseCalendar v-model="editableTask.date" :disabled="!isEditing" />
           </div>
 
-          <!-- Кнопки просмотра -->
           <div v-if="!isEditing" class="pop-browse__btn-browse">
             <div class="btn-group">
               <BaseButton class="btn-browse__edit _btn-bor _hover03" @click="startEditing"
@@ -76,7 +72,6 @@
             </RouterLink>
           </div>
 
-          <!-- Кнопки редактирования -->
           <div v-else class="pop-browse__btn-edit">
             <div class="btn-group">
               <BaseButton class="btn-edit__edit _btn-bg _hover01" @click="saveChanges"
@@ -100,21 +95,18 @@
 </template>
 
 <script setup>
-import { RouterLink, useRoute } from 'vue-router'
-import { computed, inject, reactive, ref} from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { computed, inject, reactive, ref, watch } from 'vue'
 import BaseCalendar from './BaseCalendar.vue'
 import BaseButton from './BaseButton.vue'
 
-import { deleteTaskAPI, editTask} from '@/services/api'
-import router from '@/router'
+import { deleteTaskAPI, editTask } from '@/services/api'
 
 const route = useRoute()
+const router = useRouter()
 
 const { tasks } = inject('tasksData')
 const { userInfo } = inject('auth')
-
-const id = route.params.id
-console.log(id) // должен показать id из URL
 
 const isEditing = ref(false)
 
@@ -127,7 +119,7 @@ const allStatuses = [
 ]
 
 function getStatusInfo(statusValue) {
-  const statusItem = allStatuses.find(s => s.value === statusValue)
+  const statusItem = allStatuses.find((s) => s.value === statusValue)
   return statusItem || { label: 'Без статуса', value: '' }
 }
 
@@ -139,7 +131,8 @@ const task = computed(() => {
       title: '',
       status: '',
       description: '',
-      date: new Date().toISOString(),
+      date: null, // срок исполнения
+      createdAt: null, // дата создания
       statusLabel: 'Без статуса',
     }
   }
@@ -150,36 +143,59 @@ const task = computed(() => {
   }
 })
 
-// Редактируемая копия задачи
+watch(task, (newTask) => {
+  editableTask.title = newTask.title || ''
+  editableTask.topic = newTask.topic || ''
+  editableTask.status = newTask.status || ''
+  editableTask.description = newTask.description || ''
+  editableTask.date = newTask.date || null
+})
+
 const editableTask = reactive({
   title: '',
   topic: '',
   status: '',
   description: '',
-  date: new Date().toISOString(),
+  date: null,
 })
 
-// При входе в режим редактирования копируем данные
 const startEditing = () => {
   editableTask.title = task.value.title
   editableTask.topic = task.value.topic
   editableTask.status = task.value.status || ''
   editableTask.description = task.value.description || ''
-  editableTask.date = task.value.date || ''
+  editableTask.date = task.value.date || null
   isEditing.value = true
 }
 
-// Выбор статуса при редактировании
 const selectStatus = (statusValue) => {
   editableTask.status = statusValue
 }
 
-// Отмена изменений
 const cancelEditing = () => {
   isEditing.value = false
 }
 
+const validateTask = () => {
+  if (!editableTask.title || editableTask.title.trim() === '') {
+    alert('Пожалуйста, заполните название задачи.')
+    return false
+  }
+  if (!editableTask.topic || editableTask.topic.trim() === '') {
+    alert('Пожалуйста, выберите тему задачи.')
+    return false
+  }
+  if (!editableTask.date) {
+    alert('Пожалуйста, выберите дату исполнения задачи.')
+    return false
+  }
+  return true
+}
+
 const saveChanges = async () => {
+  if (!validateTask()) {
+    return
+  }
   try {
     const response = await editTask({
       token: userInfo.value.token,
@@ -191,36 +207,34 @@ const saveChanges = async () => {
         description: editableTask.description,
         date: editableTask.date,
       },
-    });
+    })
 
     if (response.tasks) {
-      tasks.value = response.tasks;
+      tasks.value = response.tasks
     } else if (response.task) {
-      const updatedTask = response.task;
-      const index = tasks.value.findIndex(t => t._id === updatedTask._id);
+      const updatedTask = response.task
+      const index = tasks.value.findIndex((t) => t._id === updatedTask._id)
       if (index !== -1) {
-        tasks.value.splice(index, 1, updatedTask);
+        tasks.value.splice(index, 1, updatedTask)
       }
     }
 
-    isEditing.value = false;
+    isEditing.value = false
     router.push('/')
   } catch (error) {
-    console.error('Ошибка при сохранении изменений:', error);
+    console.error('Ошибка при сохранении изменений:', error)
   }
 }
 
-
-// Удаление задачи
 const deleteTask = async () => {
   try {
     await deleteTaskAPI({
       token: userInfo.value.token,
       id: route.params.id,
     })
-    // Удаляем задачу из списка
+
     tasks.value = tasks.value.filter((t) => t._id !== route.params.id)
-    // Переходим на главную страницу
+
     router.push('/')
   } catch (error) {
     console.error('Ошибка при удалении задачи:', error.message)
@@ -239,9 +253,15 @@ const getThemeClass = (topic) => {
       return ''
   }
 }
+
+function closeOnBackdropClick(event) {
+  if (event.target === event.currentTarget) {
+    router.push('/')
+  }
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pop-browse {
   display: flex;
   width: 100%;
@@ -432,6 +452,99 @@ const getThemeClass = (topic) => {
 }
 .pop-browse:target {
   display: block;
+}
+body.dark-theme {
+  .pop-browse__container {
+    background: rgba(20, 20, 30, 0.5);
+  }
+
+  .pop-browse__block {
+    background-color: #20202c;
+    border: 1px solid #3a4a6d;
+    border-radius: 10px;
+    color: #cdd9e5;
+    box-shadow:
+      0 0 10px 3px rgba(58, 74, 109, 0.7),
+      0 4px 12px rgba(26, 38, 72, 0.8);
+    background-image: radial-gradient(circle at center, rgba(58, 74, 109, 0.3), transparent 70%);
+  }
+
+  .pop-browse__ttl {
+    color: #FFFFFF;
+  }
+
+  .pop-browse__form {
+    max-width: 370px;
+    width: 100%;
+  }
+
+  .form-browse__area {
+    background: #151419;
+    border-color: #3a4a6d;
+    color: #8B94A3;
+    font-weight: 400;
+  }
+  .form-browse__area::placeholder {
+    color: #8B94A3;
+  }
+  .form-browse__area::-moz-placeholder {
+    color: #8B94A3;
+  }
+
+  .status {
+    margin-bottom: 11px;
+  }
+  .status__p {
+    color: #FFFFFF;
+    margin-bottom: 14px;
+  }
+  .status__theme {
+    background-color: transparent;
+    border-color: #94A6BE66;
+    color: #94A6BE;
+  }
+  .status__theme._selected {
+    background-color: #94A6BE;
+    border-color: #565eef;
+    color: #151419;
+    cursor: default;
+  }
+  .status__theme._selected p,
+  .status__theme._selected-text {
+    color: black !important;
+  }
+  .status__theme._clickable {
+    cursor: pointer;
+    &:hover {
+      background-color: #565eef;
+      border-color: #565eef;
+      color: #fff;
+    }
+  }
+
+  .btn-group button {
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    background: transparent;
+  }
+  .btn-group button._btn-bg {
+    background-color: #565eef;
+    color: #fff;
+  }
+  .btn-group button._btn-bor:hover {
+    background-color: #565eef;
+    border-color: #565eef;
+    color: #fff;
+  }
+  .btn-group button._btn-bg:hover {
+    background-color: #565eef;
+  }
+
+  .pop-browse__wrap {
+    a {
+      color: #565eef;
+    }
+  }
 }
 @media screen and (max-width: 660px) {
   .pop-browse {

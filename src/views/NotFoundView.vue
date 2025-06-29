@@ -24,7 +24,7 @@ import { RouterLink } from 'vue-router';
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .not-found {
    height: 100vh;
    background: #0a192f;

@@ -37,7 +37,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .kanban-board {
   display: flex;
   flex-wrap: wrap;
@@ -75,7 +75,7 @@ export default defineComponent({
   padding: 15px 13px 19px;
 }
 .skeleton-line {
-  background: linear-gradient(90deg, #C1CDDC 25%, #E9EEF7 50%, #C1CDDC 75%);
+  background: linear-gradient(90deg, #c1cddc 25%, #e9eef7 50%, #c1cddc 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
@@ -115,6 +115,46 @@ export default defineComponent({
   width: 58px;
   height: 13px;
   margin-top: 30px;
+}
+body.dark-theme {
+  .kanban-board {
+    /* можно оставить без изменений или задать фон */
+  }
+
+  .kanban-column {
+    /* если нужно, можно добавить отступы */
+  }
+
+  .column-title {
+    color: #94a6be; /* можно чуть светлее, если нужно */
+  }
+
+  .card-skeleton {
+    background-color: #1e1e2f; /* тёмный фон карточек */
+    box-shadow: 0 2px 8px rgba(20, 20, 30, 0.7);
+  }
+
+  .skeleton-line {
+    background: linear-gradient(
+      90deg,
+      #475b77 25%,
+      #94a6be 50%,
+      #475b77 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-dark 1.5s infinite linear;
+  }
+
+  @keyframes shimmer-dark {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
+  /* Размеры и остальное без изменений */
 }
 
 </style>

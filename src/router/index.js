@@ -59,14 +59,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // Берем токен
+
   const token = localStorage.getItem('userInfo')
 
-  // Проверяем, действительно ли на маршруте нужна авторизация и есть ли токен
   if (to.meta.requiresAuth && !token) {
-    next('/sign-in') // Если нет, уводим на страницу входа
+    next('/sign-in') 
   } else {
-    next() // Иначе пропускаем пользователя
+    next() 
   }
 })
 

@@ -60,22 +60,19 @@ const onClickOutside = (event) => {
 // --- Тема ---
 const isDarkTheme = ref(false)
 
-// При монтировании проверяем сохранённую тему
 onMounted(() => {
-  document.addEventListener('click', onClickOutside)
-
   const savedTheme = localStorage.getItem('dark-theme')
   if (savedTheme === 'true') {
     isDarkTheme.value = true
     document.body.classList.add('dark-theme')
   }
+  document.addEventListener('click', onClickOutside)
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside)
 })
 
-// Следим за изменением темы и меняем класс у body
 watch(isDarkTheme, (newVal) => {
   if (newVal) {
     document.body.classList.add('dark-theme')
@@ -86,7 +83,7 @@ watch(isDarkTheme, (newVal) => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header__user {
   height: 20px;
   display: flex;
@@ -201,5 +198,51 @@ watch(isDarkTheme, (newVal) => {
   background-color: #565eef;
   color: white;
   outline: none;
+}
+/* Темная тема для окна профиля */
+body.dark-theme .header__user._hover02 {
+  color: #ffffff;
+}
+
+body.dark-theme .header__user._hover02::after {
+  border-color: #ffffff;
+}
+
+body.dark-theme .header__pop-user-set {
+  background: #202229;
+  border-color: rgba(100, 100, 120, 0.6);
+  box-shadow: 0 10px 39px 0 rgba(10, 10, 10, 0.7);
+}
+
+body.dark-theme .pop-user-set__name {
+  color: #ffffff;
+}
+
+body.dark-theme .pop-user-set__mail {
+  color: #94a6be;
+}
+
+body.dark-theme .pop-user-set__theme p {
+  color: #ffffff;
+}
+
+body.dark-theme .pop-user-set__theme input[type='checkbox'] {
+  background: #ffffff;
+}
+
+body.dark-theme .pop-user-set__theme input[type='checkbox']::before {
+  background-color: #565eef;
+}
+
+body.dark-theme .pop-user-set button {
+  background: transparent;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+body.dark-theme .pop-user-set button:hover,
+body.dark-theme .pop-user-set button:active {
+  background-color: #565eef;
+  border-color: #565eef;
 }
 </style>
