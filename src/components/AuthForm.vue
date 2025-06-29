@@ -37,9 +37,15 @@
             />
             <p v-show="error" class="error-text">{{ error }}</p>
 
-            <BaseButton class="modal__btn-enter _hover01" id="btnEnter">
+            <BaseButton
+              :disabled="isButtonDisabled"
+              :class="{ disabled: isButtonDisabled }"
+              class="modal__btn-enter _hover01"
+              id="btnEnter"
+            >
               {{ isSignUp ? 'Зарегистрироваться' : 'Войти' }}
             </BaseButton>
+
             <div class="modal__form-group">
               <p>{{ isSignUp ? 'Уже есть аккаунт?' : 'Нужно зарегистрироваться?' }}</p>
               <RouterLink :to="isSignUp ? '/sign-in' : '/sign-up'">{{
@@ -55,7 +61,7 @@
 
 <script setup>
 import { signIn, signUp } from '@/services/auth'
-import { inject, ref } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseInput from './BaseInput.vue'
 import BaseButton from './BaseButton.vue'
@@ -81,6 +87,16 @@ const errors = ref({
 })
 
 const error = ref('')
+
+const isSubmitted = ref(false)
+
+// Чистая проверка, не меняет ошибки
+function isFormValid() {
+  if (props.isSignUp && !formData.value.name.trim()) return false
+  if (!formData.value.login.trim()) return false
+  if (!formData.value.password.trim()) return false
+  return true
+}
 
 function validateForm() {
   let isValid = true
@@ -117,9 +133,15 @@ function validateForm() {
   return isValid
 }
 
+const isButtonDisabled = computed(() => {
+  if (!isSubmitted.value) return false
+  return !isFormValid()
+})
+
 async function handleSubmit(event) {
   event.preventDefault()
-  // Валидация формы перед отправкой
+  isSubmitted.value = true
+
   if (!validateForm()) {
     return
   }
@@ -133,12 +155,19 @@ async function handleSubmit(event) {
       router.push('/')
     }
   } catch (err) {
-    error.value = err.message
+    error.value = err.message || 'Ошибка при авторизации'
   }
 }
+
+// Сбрасываем isSubmitted при изменении данных, чтобы кнопка активировалась сразу после исправления
+watch(formData, () => {
+  if (isSubmitted.value) {
+    isSubmitted.value = false
+  }
+})
 </script>
 
-<style scoped >
+<style scoped>
 .container-auth {
   display: block;
   width: 100vw;
@@ -228,6 +257,13 @@ async function handleSubmit(event) {
     align-items: center;
     justify-content: center;
   }
+}
+.modal__btn-enter.disabled,
+.modal__btn-enter:disabled {
+  background-color: #94A6BE !important;
+  color: #ffffff !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
 }
 .modal__form-group {
   text-align: center;
