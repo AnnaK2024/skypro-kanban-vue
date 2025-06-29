@@ -1,11 +1,12 @@
 <template>
-    <div v-if="card" class="cards__item">
+  <div v-if="card != null" class="cards">
+    <div class="cards__item">
       <div class="cards__card card">
         <div class="card__group">
           <div class="card__theme" :class="getThemeClass(card.topic)">
             <p>{{ card.topic }}</p>
           </div>
-          <RouterLink :to="'/card/' + card.id">
+          <RouterLink :to="'/card/' + card._id">
             <div class="card__btn">
               <div></div>
               <div></div>
@@ -46,23 +47,33 @@
                 </clipPath>
               </defs>
             </svg>
-            <p>{{ card.date }}</p>
+            <p>{{ formattedDate }}</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { format, parseISO } from 'date-fns'
+import { computed, defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
-const { card } = defineProps({
-  card: {
-    type: Object,
-    required: true,
-  },
-  loading: Boolean,
+const props = defineProps({
+  card: Object,
+})
+const card = props.card
+
+// Форматируем дату, предполагая, что card.date — это ISO строка
+const formattedDate = computed(() => {
+  if (!card || !card.date) return ''
+  try {
+    const parsedDate = parseISO(card.date)
+    return format(parsedDate, 'dd.MM.yyyy') // например, 24.06.2024
+  } catch {
+    return card.date // если формат невалидный, выводим как есть
+  }
 })
 
 const getThemeClass = (topic) => {
@@ -80,6 +91,11 @@ const getThemeClass = (topic) => {
 </script>
 
 <style scoped>
+.cards {
+  width: 100%;
+  display: block;
+  position: relative;
+}
 .cards__item {
   padding: 5px;
   opacity: 0;

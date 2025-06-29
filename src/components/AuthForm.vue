@@ -55,10 +55,13 @@
 
 <script setup>
 import { signIn, signUp } from '@/services/auth'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseInput from './BaseInput.vue'
 import BaseButton from './BaseButton.vue'
+
+// Вытаскиваем функцию из провайдера с помощью inject
+const { setUserInfo } = inject('auth')
 
 const router = useRouter()
 const props = defineProps({
@@ -126,7 +129,7 @@ async function handleSubmit(event) {
       ? await signUp(formData.value)
       : await signIn({ login: formData.value.login, password: formData.value.password })
     if (data) {
-      localStorage.setItem('userInfo', JSON.stringify(data))
+      setUserInfo(data)
       router.push('/')
     }
   } catch (err) {
@@ -135,14 +138,7 @@ async function handleSubmit(event) {
 }
 </script>
 
-<style scoped>
-.wrapper {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  background-color: #eaeef6;
-}
+<style scoped >
 .container-auth {
   display: block;
   width: 100vw;

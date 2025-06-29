@@ -1,14 +1,25 @@
 <template>
-  <a href="#user-set-target" class="header__user _hover02" @click.prevent="toggleModal"
-    >Ivan Ivanov</a
+  <a
+    href="#user-set-target"
+    class="header__user _hover02"
+    @click.prevent="toggleModal"
+    ref="buttonRef"
   >
-  <div class="header__pop-user-set pop-user-set" v-if="isModalVisible" id="user-set-target">
-    <!-- <a href="">x</a> -->
-    <p class="pop-user-set__name">Ivan Ivanov</p>
-    <p class="pop-user-set__mail">ivan.ivanov@gmail.com</p>
+    {{ userName }}
+  </a>
+  <div class="header__pop-user-set pop-user-set" v-if="isModalVisible" ref="modalRef">
+    <p class="pop-user-set__name">{{ userName || 'Имя не указано' }}</p>
+    <p class="pop-user-set__mail">{{ userLogin }}</p>
     <div class="pop-user-set__theme">
       <p>Темная тема</p>
-      <input type="checkbox" class="checkbox" name="checkbox" />
+      <input
+        type="checkbox"
+        class="checkbox"
+        name="checkbox"
+        v-model="isDarkTheme"
+        id="theme-toggle"
+      />
+      <label for="theme-toggle" class="visually-hidden"></label>
     </div>
     <RouterLink to="/exit">
       <BaseButton class="_hover03">Выйти</BaseButton>
@@ -17,15 +28,62 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { RouterLink} from 'vue-router'
+import { ref, inject, computed, onMounted, onUnmounted, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 import BaseButton from './BaseButton.vue'
 
-const isModalVisible = ref(false)
+const auth = inject('auth')
 
+const isModalVisible = ref(false)
 const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value
 }
+
+const userName = computed(() => auth?.userInfo?.value?.name || 'Профиль')
+const userLogin = computed(() => auth?.userInfo?.value?.login || 'email@example.com')
+
+// refs для элементов
+const modalRef = ref(null)
+const buttonRef = ref(null)
+
+const onClickOutside = (event) => {
+  const modalEl = modalRef.value
+  const buttonEl = buttonRef.value
+  if (!modalEl || !buttonEl) return
+
+  // если клик вне модалки и вне кнопки — закрываем модалку
+  if (!modalEl.contains(event.target) && !buttonEl.contains(event.target)) {
+    isModalVisible.value = false
+  }
+}
+
+// --- Тема ---
+const isDarkTheme = ref(false)
+
+// При монтировании проверяем сохранённую тему
+onMounted(() => {
+  document.addEventListener('click', onClickOutside)
+
+  const savedTheme = localStorage.getItem('dark-theme')
+  if (savedTheme === 'true') {
+    isDarkTheme.value = true
+    document.body.classList.add('dark-theme')
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', onClickOutside)
+})
+
+// Следим за изменением темы и меняем класс у body
+watch(isDarkTheme, (newVal) => {
+  if (newVal) {
+    document.body.classList.add('dark-theme')
+  } else {
+    document.body.classList.remove('dark-theme')
+  }
+  localStorage.setItem('dark-theme', newVal)
+})
 </script>
 
 <style scoped>

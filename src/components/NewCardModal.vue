@@ -1,6 +1,6 @@
 <!-- Карточка создания новой задачи -->
 <template>
-  <div class="pop-new-card" v-if="isVisible" >
+  <div class="pop-new-card" v-if="isVisible">
     <div class="pop-new-card__container">
       <div class="pop-new-card__block">
         <div class="pop-new-card__content">
@@ -17,6 +17,7 @@
                   name="name"
                   id="formTitle"
                   placeholder="Введите название задачи..."
+                  v-model="form.title"
                 />
               </div>
               <div class="form-new__block">
@@ -26,6 +27,7 @@
                   name="text"
                   id="textArea"
                   placeholder="Введите описание задачи..."
+                  v-model="form.description"
                 ></textarea>
               </div>
             </form>
@@ -34,18 +36,32 @@
           <div class="pop-new-card__categories categories">
             <p class="categories__p subttl">Категория</p>
             <div class="categories__themes">
-              <div class="categories__theme _orange _active-category">
+              <div
+                class="categories__theme _orange"
+                :class="{ '_active-category': form.topic === 'Web Design' }"
+                @click="selectCategory('Web Design')"
+              >
                 <p class="_orange">Web Design</p>
               </div>
-              <div class="categories__theme _green">
+              <div
+                class="categories__theme _green"
+                :class="{ '_active-category': form.topic === 'Research' }"
+                @click="selectCategory('Research')"
+              >
                 <p class="_green">Research</p>
               </div>
-              <div class="categories__theme _purple">
+              <div
+                class="categories__theme _purple"
+                :class="{ '_active-category': form.topic === 'Copywriting' }"
+                @click="selectCategory('Copywriting')"
+              >
                 <p class="_purple">Copywriting</p>
               </div>
             </div>
           </div>
-          <button class="form-new__create _hover01" id="btnCreate">Создать задачу</button>
+          <BaseButton class="form-new__create _hover01" id="btnCreate" @click.prevent="createTask">
+            Создать задачу
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -53,35 +69,73 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from 'vue'
+import { inject, nextTick, reactive, ref, watch } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import BaseCalendar from './BaseCalendar.vue'
-import { RouterLink, useRoute } from 'vue-router'
+import BaseButton from './BaseButton.vue'
 
-// Состояние видимости модального окна
+const tasksData = inject('tasksData')
+const addTask = tasksData?.addTask
+
 const isVisible = ref(false)
-
-// Ссылка на input для установки фокуса
 const titleInput = ref(null)
-
-// Получение текущего маршрута
 const route = useRoute()
+const router = useRouter()
 
-// Отслеживание изменения маршрута
+const form = reactive({
+  title: '',
+  description: '',
+  topic: 'Web Design',
+  dueDate: new Date().toISOString(),
+})
+
 watch(
   () => route.path,
   async (newPath) => {
     isVisible.value = newPath === '/newCard'
-
     if (isVisible.value) {
-      // Дождаться отрисовки DOM
       await nextTick()
-
-      // Установить фокус на input
       titleInput.value?.focus()
     }
   },
-  { immediate: true } // Выполнить сразу при инициализации
+  { immediate: true },
 )
+
+function selectCategory(topic) {
+  form.topic= topic
+  console.log('Selected topic:', topic)
+}
+
+function createTask() {
+  if (!form.title.trim()) {
+    console.log('Creating task with topic:', form.topic)
+    alert('Название задачи обязательно')
+    return
+  }
+
+  const newTask = {
+    id: Date.now(),
+    title: form.title.trim(),
+    description: form.description.trim(),
+    topic: form.topic,
+    dueDate: form.dueDate,
+    status: 'Без статуса',
+  }
+
+  if (addTask) {
+    addTask(newTask) // вызываем напрямую
+  } else {
+    console.warn('addTask не найден')
+  }
+
+  // Сброс формы
+  form.title = ''
+  form.description = ''
+  form.topic = 'Web Design'
+  form.dueDate = new Date().toISOString(),
+
+  router.push('/')
+}
 </script>
 
 <style scoped>

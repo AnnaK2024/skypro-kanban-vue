@@ -1,3 +1,4 @@
+import AppLayout from '@/layout/AppLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import SignInView from '@/views/SignInView.vue'
@@ -9,40 +10,46 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      component: AppLayout,
       children: [
         {
-          path: '/newCard',
-          name: 'newCard',
-          component: () => import('@/views/NewCardView.vue'),
+          path: '',
+          name: 'home',
+          component: HomeView,
+          children: [
+            {
+              path: '/newCard',
+              name: 'newCard',
+              component: () => import('@/views/NewCardView.vue'),
+            },
+            {
+              path: '/card/:id',
+              name: 'card',
+              component: () => import('@/views/EditTaskView.vue'),
+            },
+            {
+              path: '/exit',
+              name: 'exit',
+              component: () => import('@/views/ExitView.vue'),
+            },
+            {
+              path: '/:pathMatch(.*)*',
+              component: NotFoundView,
+            },
+          ],
+          meta: {
+            requiresAuth: true,
+          },
         },
         {
-          path: '/card/:id',
-          name: 'card',
-          component: () => import('@/views/EditTaskView.vue'),
+          path: '/sign-in',
+          component: SignInView,
         },
         {
-          path: '/exit',
-          name: 'exit',
-          component: () => import('@/views/ExitView.vue'),
-        },
-        {
-          path: '/:pathMatch(.*)*',
-          component: NotFoundView,
+          path: '/sign-up',
+          component: SignUpView,
         },
       ],
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/sign-in',
-      component: SignInView,
-    },
-    {
-      path: '/sign-up',
-      component: SignUpView,
     },
     {
       path: '/:pathMatch(.*)*',

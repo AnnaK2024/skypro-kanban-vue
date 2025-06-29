@@ -7,9 +7,10 @@
           <div v-else class="columns">
             <TaskColumn
               v-for="status in statuses"
-              :key="status"
-              :status="status"
-              :tasks="filteredTasks(status)"
+              :key="status.value"
+              :status="status.value"
+              :statusLabel="status.label"
+              :tasks="filteredTasks(status.value)"
             />
           </div>
         </div>
@@ -28,7 +29,13 @@ const props = defineProps({
   erorr: String,
 })
 
-const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
+const statuses = [
+  { label: 'Без статуса', value: 'Без статуса' },
+  { label: 'Нужно сделать', value: 'todo' },
+  { label: 'В работе', value: 'inProgress' },
+  { label: 'Тестирование', value: 'testing' },
+  { label: 'Готово', value: 'done' },
+]
 
 const filteredTasks = (status) => {
   return props.tasks.filter((task) => task.status === status)
@@ -65,8 +72,9 @@ const hasTasks = computed(() => props.tasks.length > 0)
   text-align: center;
   font-size: 4rem;
   font-weight: bold;
-  background: linear-gradient(270deg, #8f98a3, #ced3dc, #a6bdda);
+  background: linear-gradient(270deg, #565eef, #5b5e86, #bbbdee);
   background-size: 600% 600%;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradientShift 5s ease infinite;

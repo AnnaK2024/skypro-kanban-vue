@@ -1,10 +1,10 @@
 <template>
   <div class="main__column">
     <div class="column__title">
-      <p>{{ status }}</p>
+      <p>{{ statusLabel }}</p>
     </div>
-    <div class="cards">
-      <div v-for="card in tasks" :key="card.id">
+    <div>
+      <div v-for="card in tasks" :key="card._id">
         <TaskCard :card="card" />
       </div>
     </div>
@@ -15,8 +15,9 @@
 import TaskCard from './TaskCard.vue';
 
 defineProps({
-  status: { type: String, required: true },
-  tasks: { type: Array, required: true },
+  status: String,
+  statusLabel: String,
+  tasks: Array,
 })
 </script>
 
@@ -36,11 +37,6 @@ defineProps({
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
-}
-.cards {
-  width: 100%;
-  display: block;
-  position: relative;
 }
 @media screen and (max-width: 1200px) {
   .main__column {

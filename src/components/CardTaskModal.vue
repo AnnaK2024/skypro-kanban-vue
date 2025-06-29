@@ -1,79 +1,96 @@
 <!-- Редактирование задачи из карточки -->
 <template>
-  <div class="pop-browse" id="popBrowse">
+  <div class="pop-browse">
     <div class="pop-browse__container">
       <div class="pop-browse__block">
         <div class="pop-browse__content">
           <div class="pop-browse__top-block">
-            <h3 class="pop-browse__ttl">Название задачи</h3>
-            <div class="categories__theme theme-top _orange _active-category">
-              <p class="_orange">Web Design</p>
+            <h3 class="pop-browse__ttl">{{task.title || 'Название задачи'  }}</h3>
+            <div class="categories__theme theme-top _orange _active-category" :class="getThemeClass(task.topic)">
+              <p>{{ task.topic || 'Без категории' }}</p>
             </div>
           </div>
+
+          <!-- Статус -->
           <div class="pop-browse__status status">
             <p class="status__p subttl">Статус</p>
-            <div class="status__themes">
-              <div class="status__theme _hide">
-                <p>Без статуса</p>
+
+            <!-- Режим просмотра: показываем только текущий статус -->
+            <div v-if="!isEditing" class="status__themes">
+              <div class="status__theme _gray _selected">
+                <p>{{ task.statusLabel || 'Без статуса' }}</p>
               </div>
-              <div class="status__theme _gray">
-                <p class="_gray">Нужно сделать</p>
-              </div>
-              <div class="status__theme _hide">
-                <p>В работе</p>
-              </div>
-              <div class="status__theme _hide">
-                <p>Тестирование</p>
-              </div>
-              <div class="status__theme _hide">
-                <p>Готово</p>
+            </div>
+
+            <!-- Режим редактирования: показываем все статусы -->
+            <div v-else class="status__themes">
+              <div
+                v-for="(statusItem, index) in allStatuses"
+                :key="index"
+                class="status__theme"
+                :class="{
+                  _selected: editableTask.status === statusItem.value,
+                  _clickable: true,
+                }"
+                @click="selectStatus(statusItem.value)"
+              >
+                <p :class="editableTask.status === statusItem.value ? '_selected-text' : ''">
+                  {{ statusItem.label }}
+                </p>
               </div>
             </div>
           </div>
+
+          <!-- Описание и календарь -->
           <div class="pop-browse__wrap">
-            <form class="pop-browse__form form-browse" id="formBrowseCard" action="#">
+            <form class="pop-browse__form form-browse" id="formBrowseCard" @submit.prevent>
               <div class="form-browse__block">
                 <label for="textArea01" class="subttl">Описание задачи</label>
                 <textarea
                   class="form-browse__area"
                   name="text"
                   id="textArea01"
-                  readonly
+                  :readonly="!isEditing"
                   placeholder="Введите описание задачи..."
+                  v-model="editableTask.description"
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar />
+
+            <!-- Предполагается, что BaseCalendar умеет принимать v-model для даты -->
+            <BaseCalendar v-model="editableTask.date" :disabled="!isEditing" />
           </div>
-          <div class="theme-down__categories theme-down">
-            <p class="categories__p subttl">Категория</p>
-            <div class="categories__theme _orange _active-category">
-              <p class="_orange">Web Design</p>
-            </div>
-          </div>
-          <div class="pop-browse__btn-browse">
+
+          <!-- Кнопки просмотра -->
+          <div v-if="!isEditing" class="pop-browse__btn-browse">
             <div class="btn-group">
-              <button class="btn-browse__edit _btn-bor _hover03">
-                <a href="#">Редактировать задачу</a>
-              </button>
-              <button class="btn-browse__delete _btn-bor _hover03">
-                <a href="#">Удалить задачу</a>
-              </button>
+              <BaseButton class="btn-browse__edit _btn-bor _hover03" @click="startEditing"
+                >Редактировать задачу</BaseButton
+              >
+              <BaseButton class="btn-browse__delete _btn-bor _hover03" @click="deleteTask"
+                >Удалить задачу</BaseButton
+              >
             </div>
             <RouterLink to="/">
-              <button class="btn-browse__close _btn-bg _hover01">Закрыть</button>
+              <BaseButton class="btn-browse__close _btn-bg _hover01">Закрыть</BaseButton>
             </RouterLink>
           </div>
-          <div class="pop-browse__btn-edit _hide">
+
+          <!-- Кнопки редактирования -->
+          <div v-else class="pop-browse__btn-edit">
             <div class="btn-group">
-              <button class="btn-edit__edit _btn-bg _hover01"><a href="#">Сохранить</a></button>
-              <button class="btn-edit__edit _btn-bor _hover03"><a href="#">Отменить</a></button>
-              <button class="btn-edit__delete _btn-bor _hover03" id="btnDelete">
-                <a href="#">Удалить задачу</a>
-              </button>
+              <BaseButton class="btn-edit__edit _btn-bg _hover01" @click="saveChanges"
+                >Сохранить</BaseButton
+              >
+              <BaseButton class="btn-edit__edit _btn-bor _hover03" @click="cancelEditing"
+                >Отменить</BaseButton
+              >
+              <BaseButton class="btn-edit__delete _btn-bor _hover03" @click="deleteTask"
+                >Удалить задачу</BaseButton
+              >
             </div>
             <RouterLink to="/">
-              <button class="btn-edit__close _btn-bg _hover01">Закрыть</button>
+              <BaseButton class="btn-edit__close _btn-bg _hover01">Закрыть</BaseButton>
             </RouterLink>
           </div>
         </div>
@@ -83,21 +100,146 @@
 </template>
 
 <script setup>
-import BaseCalendar from './BaseCalendar.vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { computed, ref } from 'vue'
-import { getTask } from './mocks/tasks'
+import { computed, inject, reactive, ref} from 'vue'
+import BaseCalendar from './BaseCalendar.vue'
+import BaseButton from './BaseButton.vue'
 
-const tasks = ref(getTask())
+import { deleteTaskAPI, editTask} from '@/services/api'
+import router from '@/router'
 
 const route = useRoute()
 
-const task = computed(() => {
-  const id = route.params.id
-  return tasks.value.find((t) => String(t.id) === id) || { topic: '', title: '' }
-})
-</script>
+const { tasks } = inject('tasksData')
+const { userInfo } = inject('auth')
 
+const id = route.params.id
+console.log(id) // должен показать id из URL
+
+const isEditing = ref(false)
+
+const allStatuses = [
+  { label: 'Без статуса', value: '' },
+  { label: 'Нужно сделать', value: 'todo' },
+  { label: 'В работе', value: 'inProgress' },
+  { label: 'Тестирование', value: 'testing' },
+  { label: 'Готово', value: 'done' },
+]
+
+function getStatusInfo(statusValue) {
+  const statusItem = allStatuses.find(s => s.value === statusValue)
+  return statusItem || { label: 'Без статуса', value: '' }
+}
+
+const task = computed(() => {
+  const t = tasks.value.find((t) => t._id === route.params.id)
+  if (!t) {
+    return {
+      topic: '',
+      title: '',
+      status: '',
+      description: '',
+      date: new Date().toISOString(),
+      statusLabel: 'Без статуса',
+    }
+  }
+  const statusInfo = getStatusInfo(t.status)
+  return {
+    ...t,
+    statusLabel: statusInfo.label,
+  }
+})
+
+// Редактируемая копия задачи
+const editableTask = reactive({
+  title: '',
+  topic: '',
+  status: '',
+  description: '',
+  date: new Date().toISOString(),
+})
+
+// При входе в режим редактирования копируем данные
+const startEditing = () => {
+  editableTask.title = task.value.title
+  editableTask.topic = task.value.topic
+  editableTask.status = task.value.status || ''
+  editableTask.description = task.value.description || ''
+  editableTask.date = task.value.date || ''
+  isEditing.value = true
+}
+
+// Выбор статуса при редактировании
+const selectStatus = (statusValue) => {
+  editableTask.status = statusValue
+}
+
+// Отмена изменений
+const cancelEditing = () => {
+  isEditing.value = false
+}
+
+const saveChanges = async () => {
+  try {
+    const response = await editTask({
+      token: userInfo.value.token,
+      id: route.params.id,
+      task: {
+        title: editableTask.title,
+        topic: editableTask.topic,
+        status: editableTask.status,
+        description: editableTask.description,
+        date: editableTask.date,
+      },
+    });
+
+    if (response.tasks) {
+      tasks.value = response.tasks;
+    } else if (response.task) {
+      const updatedTask = response.task;
+      const index = tasks.value.findIndex(t => t._id === updatedTask._id);
+      if (index !== -1) {
+        tasks.value.splice(index, 1, updatedTask);
+      }
+    }
+
+    isEditing.value = false;
+    router.push('/')
+  } catch (error) {
+    console.error('Ошибка при сохранении изменений:', error);
+  }
+}
+
+
+// Удаление задачи
+const deleteTask = async () => {
+  try {
+    await deleteTaskAPI({
+      token: userInfo.value.token,
+      id: route.params.id,
+    })
+    // Удаляем задачу из списка
+    tasks.value = tasks.value.filter((t) => t._id !== route.params.id)
+    // Переходим на главную страницу
+    router.push('/')
+  } catch (error) {
+    console.error('Ошибка при удалении задачи:', error.message)
+  }
+}
+
+const getThemeClass = (topic) => {
+  switch (topic) {
+    case 'Research':
+      return '_green'
+    case 'Web Design':
+      return '_orange'
+    case 'Copywriting':
+      return '_purple'
+    default:
+      return ''
+  }
+}
+</script>
 
 <style scoped>
 .pop-browse {
@@ -106,7 +248,7 @@ const task = computed(() => {
   height: 100%;
   min-width: 375px;
   min-height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 7;
@@ -243,6 +385,21 @@ const task = computed(() => {
   font-size: 14px;
   line-height: 1;
   letter-spacing: -0.14px;
+}
+.status__theme._selected {
+  background-color: #94a6be;
+  border-color: #94a6be;
+  color: white;
+  cursor: default;
+}
+
+.status__theme._selected p,
+.status__theme._selected-text {
+  color: white !important;
+}
+
+.status__theme._clickable {
+  cursor: pointer;
 }
 ._btn-bor {
   border-radius: 4px;

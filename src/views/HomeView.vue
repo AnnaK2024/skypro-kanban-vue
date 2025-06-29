@@ -7,37 +7,57 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { RouterView } from 'vue-router'
+import { ref, provide, inject, watch } from 'vue'
+import { fetchTask, postTask } from '@/services/api'
+
 import BaseHeader from '@/components/BaseHeader.vue'
 import TaskContent from '@/components/TaskContent.vue'
-
-import { ref, onMounted } from 'vue'
-import { fetchTask } from '@/services/api'
 import CardLoader from '@/components/CardLoader.vue'
 
-const loading = ref(true)
+const loading = ref(false)
 const tasks = ref([])
 const error = ref('')
 
+// Здесь нам потребуется токен из коробки auth
+const { userInfo } = inject('auth')
+
 const getTasks = async () => {
+  console.log(userInfo)
+  if (!userInfo.value?.token) return
   try {
     loading.value = true
-    const token= localStorage.getItem('userInfo') || ''
 
     const data = await fetchTask({
-      token,
+      token: userInfo.value.token,
     })
-
+    console.log(data)
     if (data) tasks.value = data
   } catch (err) {
-    error.value = err.message
+    error.value = err.message || String(err)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(getTasks)
+async function addTask(newTask) {
+  console.log('Отправляем задачу на сервер:', newTask)
+  try {
+    newTask.status = 'Без статуса'
+    if (!userInfo.value?.token) throw new Error('Нет токена')
+    const updatedTasks = await postTask({ token: userInfo.value.token, task: newTask })
+    console.log('Обновленный список задач от сервера:', updatedTasks)
+    tasks.value = updatedTasks
+  } catch (e) {
+    error.value = e.message || String(e)
+  }
+}
+
+// Передаём всем потомкам главной страницы данные о словах, загрузке и ошибке
+provide('tasksData', { tasks, loading, error, addTask })
+
+watch(userInfo, getTasks, { immediate: true })
 </script>
 
 <style scoped></style>
