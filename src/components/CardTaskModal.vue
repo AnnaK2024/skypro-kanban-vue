@@ -132,7 +132,6 @@ const task = computed(() => {
       status: '',
       description: '',
       date: null, // срок исполнения
-      createdAt: null, // дата создания
       statusLabel: 'Без статуса',
     }
   }

@@ -117,20 +117,12 @@ export default defineComponent({
   margin-top: 30px;
 }
 body.dark-theme {
-  .kanban-board {
-    /* можно оставить без изменений или задать фон */
-  }
-
-  .kanban-column {
-    /* если нужно, можно добавить отступы */
-  }
-
   .column-title {
-    color: #94a6be; /* можно чуть светлее, если нужно */
+    color: #94a6be;
   }
 
   .card-skeleton {
-    background-color: #1e1e2f; /* тёмный фон карточек */
+    background-color: #1e1e2f; 
     box-shadow: 0 2px 8px rgba(20, 20, 30, 0.7);
   }
 
@@ -153,8 +145,6 @@ body.dark-theme {
       background-position: -100% 0;
     }
   }
-
-  /* Размеры и остальное без изменений */
 }
 
 </style>

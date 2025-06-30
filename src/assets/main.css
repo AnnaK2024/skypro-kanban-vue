@@ -64,8 +64,11 @@ body.dark-theme {
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: #eaeef6;
 }
+body.dark-theme .wrapper{
+  background: #20202C;
+} 
 
 ._hover01:hover {
   background-color: #33399b;

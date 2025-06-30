@@ -128,7 +128,6 @@ function createTask() {
     description: form.description.trim(),
     topic: form.topic,
     date: form.date,
-    createdAt: new Date().toISOString(), // дата создания задачи
     status: 'Без статуса',
   }
 
@@ -303,12 +302,10 @@ body.dark-theme {
   }
 
   .pop-new-card__wrap {
-    /* цвет текста внутри формы */
     color: #f8f8f2;
   }
 
   .pop-new-card__form {
-    /* сброс цвета, если нужно */
     color: #ffffff;
   }
 

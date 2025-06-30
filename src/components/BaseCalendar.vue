@@ -329,4 +329,17 @@ const formattedSelectedDate = computed(() =>
     font-size: 14px;
   }
 }
+body.dark-theme{
+  .calendar__p span {
+  color: #ffffff;
+  }
+  .calendar__cell:hover {
+  background-color: black;
+  cursor: pointer;
+}
+ ._active-day {
+  background-color: #94a6be;
+  color: black;
+}
+}
 </style>
