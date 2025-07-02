@@ -60,22 +60,19 @@ const onClickOutside = (event) => {
 // --- Тема ---
 const isDarkTheme = ref(false)
 
-// При монтировании проверяем сохранённую тему
 onMounted(() => {
-  document.addEventListener('click', onClickOutside)
-
   const savedTheme = localStorage.getItem('dark-theme')
   if (savedTheme === 'true') {
     isDarkTheme.value = true
     document.body.classList.add('dark-theme')
   }
+  document.addEventListener('click', onClickOutside)
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', onClickOutside)
 })
 
-// Следим за изменением темы и меняем класс у body
 watch(isDarkTheme, (newVal) => {
   if (newVal) {
     document.body.classList.add('dark-theme')
@@ -86,7 +83,7 @@ watch(isDarkTheme, (newVal) => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header__user {
   height: 20px;
   display: flex;
@@ -182,10 +179,24 @@ watch(isDarkTheme, (newVal) => {
 .pop-user-set button {
   width: 72px;
   height: 30px;
-  background: transparent;
+  background-color: #f5f7fa;
   color: #565eef;
   border-radius: 4px;
-  border: 1px solid #565eef;
+  border: 1.5px solid #565eef;
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 5px rgba(150, 150, 150, 0.3);
+  transition:
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+
+  &:hover {
+    background-color: #565eef;
+    color: #ffffff;
+    box-shadow:
+      inset 2px 2px 5px rgba(30, 60, 255, 0.9),
+      inset -2px -2px 5px rgba(10, 20, 150, 0.8);
+  }
 }
 .pop-user-set button a {
   color: #565eef;
@@ -202,4 +213,56 @@ watch(isDarkTheme, (newVal) => {
   color: white;
   outline: none;
 }
+
+body.dark-theme .header__user._hover02 {
+  color: #ffffff;
+}
+
+body.dark-theme .header__user._hover02::after {
+  border-color: #ffffff;
+}
+
+body.dark-theme .header__pop-user-set {
+  background-color: #20202c;
+  border: 1px solid #3a4a6d;
+  border-radius: 10px;
+  color: #cdd9e5;
+  box-shadow:
+    0 0 10px 3px rgba(58, 74, 109, 0.7),
+    0 4px 12px rgba(26, 38, 72, 0.8);
+  background-image: radial-gradient(circle at center, rgba(58, 74, 109, 0.3), transparent 70%);
+}
+
+body.dark-theme .pop-user-set__name {
+  color: #ffffff;
+}
+
+body.dark-theme .pop-user-set__mail {
+  color: #94a6be;
+}
+
+body.dark-theme .pop-user-set__theme p {
+  color: #ffffff;
+}
+
+body.dark-theme .pop-user-set__theme input[type='checkbox'] {
+  background: #ffffff;
+}
+
+body.dark-theme .pop-user-set__theme input[type='checkbox']::before {
+  background-color: #565eef;
+}
+
+body.dark-theme .pop-user-set button {
+     background-color: transparent;
+    border-color: #5a6efb;
+    color: #aab8ff;
+
+    &:hover,
+    &._hover03:hover {
+      background-color: #5a6efb;
+      color: #ffffff;
+    }
+}
+
 </style>

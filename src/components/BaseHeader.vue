@@ -25,14 +25,12 @@
 </template>
 
 <script setup>
-
-import { RouterLink, RouterView} from 'vue-router'
-import UserModal from './UserModal.vue';
-import BaseButton from './BaseButton.vue';
-
+import { RouterLink, RouterView } from 'vue-router'
+import UserModal from './UserModal.vue'
+import BaseButton from './BaseButton.vue'
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
   width: 100%;
   margin: 0 auto;
@@ -91,6 +89,56 @@ import BaseButton from './BaseButton.vue';
     height: 40px;
     border-radius: 4px;
     margin-right: 0;
+  }
+}
+body.dark-theme .header {
+    background-color: #20202c;
+    background-image: radial-gradient(circle at center, rgba(58, 74, 109, 0.3), transparent 70%);
+}
+
+body.dark-theme .header__btn-main-new {
+  background-color: #565eef;
+  color: ffffff;
+  border: none;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body.dark-theme .header__btn-main-new a {
+  color: #ffffff;
+}
+
+body.dark-theme .header__btn-main-new._hover01:hover {
+  background-color: #565eef;
+  color: #ffffff;
+}
+
+body.dark-theme .header__logo._dark {
+  display: block;
+}
+
+body.dark-theme .header__logo._light {
+  display: none;
+}
+
+.header__logo._dark {
+  display: none;
+}
+
+.header__logo._light {
+  display: block;
+}
+
+@media screen and (max-width: 495px) {
+  body.dark-theme .header__btn-main-new {
+    background-color: #565eef;
+    color: #4e5566;
+  }
+
+  body.dark-theme .header__btn-main-new._hover01:hover {
+    background-color: #565eef;
+    color: #ffffff;
   }
 }
 </style>

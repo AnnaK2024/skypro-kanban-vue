@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 import { computed, defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
@@ -65,15 +65,8 @@ const props = defineProps({
 })
 const card = props.card
 
-// Форматируем дату, предполагая, что card.date — это ISO строка
 const formattedDate = computed(() => {
-  if (!card || !card.date) return ''
-  try {
-    const parsedDate = parseISO(card.date)
-    return format(parsedDate, 'dd.MM.yyyy') // например, 24.06.2024
-  } catch {
-    return card.date // если формат невалидный, выводим как есть
-  }
+  return format(new Date(card.date), 'dd.MM.yyyy')
 })
 
 const getThemeClass = (topic) => {
@@ -90,7 +83,7 @@ const getThemeClass = (topic) => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cards {
   width: 100%;
   display: block;
@@ -203,6 +196,33 @@ const getThemeClass = (topic) => {
   color: #94a6be;
   letter-spacing: 0.2px;
 }
+body.dark-theme {
+  .cards__card {
+    background-color: #20202c;
+    border: 1px solid #3a4a6d;
+    border-radius: 10px;
+    color: #cdd9e5;
+    background-image: radial-gradient(circle at center, rgba(58, 74, 109, 0.3), transparent 70%);
+    animation: glow 2.5s infinite ease-in-out alternate;
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 6px 2px rgba(58, 74, 109, 0.6),
+        0 4px 10px rgba(26, 38, 72, 0.7);
+    }
+    50% {
+      box-shadow:
+        0 0 12px 4px rgba(58, 74, 109, 0.9),
+        0 6px 14px rgba(26, 38, 72, 1);
+    }
+  }
+  .card__title {
+    color: #ffffff;
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .cards {
     width: 100%;

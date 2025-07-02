@@ -3,15 +3,18 @@
     <div class="container">
       <div class="main__block">
         <div class="main__content">
-          <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
-          <div v-else class="columns">
-            <TaskColumn
-              v-for="status in statuses"
-              :key="status.value"
-              :status="status.value"
-              :statusLabel="status.label"
-              :tasks="filteredTasks(status.value)"
-            />
+          <CardLoader v-if="props.loading" />
+          <div v-else>
+            <div v-if="!hasTasks" class="no-tasks">Задач нет</div>
+            <div v-else class="columns">
+              <TaskColumn
+                v-for="status in statuses"
+                :key="status.value"
+                :status="status.value"
+                :statusLabel="status.label"
+                :tasks="filteredTasks(status.value)"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -20,13 +23,14 @@
 </template>
 
 <script setup>
-import TaskColumn from '@/components/TaskColumn.vue'
 import { computed } from 'vue'
+import TaskColumn from '@/components/TaskColumn.vue'
+import CardLoader from './CardLoader.vue'
 
 const props = defineProps({
   tasks: { type: Array, require: true },
   loading: Boolean,
-  erorr: String,
+  error: String,
 })
 
 const statuses = [
@@ -44,7 +48,7 @@ const filteredTasks = (status) => {
 const hasTasks = computed(() => props.tasks.length > 0)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main {
   width: 100%;
   height: auto;

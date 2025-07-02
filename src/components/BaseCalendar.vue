@@ -124,7 +124,7 @@ watch(() => props.modelValue, (newVal) => {
 function generateCalendarDays(monthDate) {
   const startMonth = startOfMonth(monthDate)
   const endMonth = endOfMonth(monthDate)
-  const startDate = startOfWeek(startMonth, { weekStartsOn: 1 }) // понедельник
+  const startDate = startOfWeek(startMonth, { weekStartsOn: 1 }) 
   const endDate = endOfWeek(endMonth, { weekStartsOn: 1 })
 
   const days = []
@@ -134,7 +134,7 @@ function generateCalendarDays(monthDate) {
       date: new Date(date),
       number: date.getDate(),
       isCurrentMonth: isSameMonth(date, monthDate),
-      isWeekend: getDay(date) === 0 || getDay(date) === 6, // вс=0, сб=6
+      isWeekend: getDay(date) === 0 || getDay(date) === 6, 
     })
     date = addDays(date, 1)
   }
@@ -178,7 +178,7 @@ const formattedSelectedDate = computed(() =>
 )
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .subttl {
   color: #000;
   font-size: 14px;
@@ -328,5 +328,18 @@ const formattedSelectedDate = computed(() =>
     height: 42px;
     font-size: 14px;
   }
+}
+body.dark-theme{
+  .calendar__p span {
+  color: #ffffff;
+  }
+  .calendar__cell:hover {
+  background-color: black;
+  cursor: pointer;
+}
+ ._active-day {
+  background-color: #94a6be;
+  color: black;
+}
 }
 </style>

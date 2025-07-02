@@ -4,31 +4,43 @@ const API_URL = 'https://wedev-api.sky.pro/api/user';
 
 export async function signIn(userData) {
    try {
-      const data = await axios.post(API_URL + "/login", userData, {
+      const response = await axios.post(API_URL + "/login", userData, {
          headers: {
             "Content-Type": "",
          },
       });
-   return data.data.user;
+      return response.data.user;
    } catch (error) {
-      throw new Error(error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) {
+         throw new Error(error.response.data.error);
+      } else if (error.message) {
+         throw new Error(error.message);
+      } else {
+         throw new Error("Произошла неизвестная ошибка при входе");
+      }
    }
 }
 
 export async function signUp({ name, login, password }) {
    try {
-      const data = await axios.post(
+      const response = await axios.post(
          API_URL,
          { login, name, password },
          {
-         headers: {
-            "Content-Type": "",
-         },
-      }
-   );
-   return data.data.user;
+            headers: {
+               "Content-Type": "",
+            },
+         }
+      );
+      return response.data.user;
    } catch (error) {
-      console.log(error);
-      throw new Error(error.response.data.error);
+      console.error("Ошибка при регистрации:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+         throw new Error(error.response.data.error);
+      } else if (error.message) {
+         throw new Error(error.message);
+      } else {
+         throw new Error("Произошла неизвестная ошибка при регистрации");
+      }
    }
 }
