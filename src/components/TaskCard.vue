@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 import { computed, defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 
@@ -66,13 +66,7 @@ const props = defineProps({
 const card = props.card
 
 const formattedDate = computed(() => {
-  if (!card || !card.date) return ''
-  try {
-    const parsedDate = parseISO(card.date)
-    return format(parsedDate, 'dd.MM.yyyy')
-  } catch {
-    return card.date
-  }
+  return format(new Date(card.date), 'dd.MM.yyyy')
 })
 
 const getThemeClass = (topic) => {
@@ -212,17 +206,18 @@ body.dark-theme {
     animation: glow 2.5s infinite ease-in-out alternate;
   }
   @keyframes glow {
-  0%, 100% {
-    box-shadow:
-      0 0 6px 2px rgba(58, 74, 109, 0.6),
-      0 4px 10px rgba(26, 38, 72, 0.7);
+    0%,
+    100% {
+      box-shadow:
+        0 0 6px 2px rgba(58, 74, 109, 0.6),
+        0 4px 10px rgba(26, 38, 72, 0.7);
+    }
+    50% {
+      box-shadow:
+        0 0 12px 4px rgba(58, 74, 109, 0.9),
+        0 6px 14px rgba(26, 38, 72, 1);
+    }
   }
-  50% {
-    box-shadow:
-      0 0 12px 4px rgba(58, 74, 109, 0.9),
-      0 6px 14px rgba(26, 38, 72, 1);
-  }
-}
   .card__title {
     color: #ffffff;
   }

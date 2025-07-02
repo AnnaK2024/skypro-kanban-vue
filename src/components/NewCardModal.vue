@@ -115,7 +115,6 @@ function createTask() {
     return
   }
 
-  // Проверяем дату
   const due = new Date(form.date)
   if (!form.date || isNaN(due.getTime())) {
     alert('Пожалуйста, выберите дату исполнения задачи')
@@ -139,14 +138,13 @@ function createTask() {
 
   form.title = ''
   form.description = ''
-  form.topic = 'Web Design'
-  ;(form.date = null), router.push('/')
+  form.topic = 'Web Design';
+  (form.date = null), router.push('/')
 }
 
 function closeOnBackdropClick(event) {
-  // Проверяем, что клик был именно по контейнеру, а не по вложенным элементам
   if (event.target === event.currentTarget) {
-    router.push('/') // закрываем окно, переходя на главную страницу
+    router.push('/')
   }
 }
 </script>

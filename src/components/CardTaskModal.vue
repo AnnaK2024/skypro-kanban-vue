@@ -131,7 +131,7 @@ const task = computed(() => {
       title: '',
       status: '',
       description: '',
-      date: null, // срок исполнения
+      date: null, 
       statusLabel: 'Без статуса',
     }
   }
@@ -142,14 +142,6 @@ const task = computed(() => {
   }
 })
 
-watch(task, (newTask) => {
-  editableTask.title = newTask.title || ''
-  editableTask.topic = newTask.topic || ''
-  editableTask.status = newTask.status || ''
-  editableTask.description = newTask.description || ''
-  editableTask.date = newTask.date || null
-})
-
 const editableTask = reactive({
   title: '',
   topic: '',
@@ -157,6 +149,15 @@ const editableTask = reactive({
   description: '',
   date: null,
 })
+
+watch(task, (newTask) => {
+  editableTask.title = newTask.title || ''
+  editableTask.topic = newTask.topic || ''
+  editableTask.status = newTask.status || ''
+  editableTask.description = newTask.description || ''
+  editableTask.date = newTask.date || null
+}, { immediate: true })
+
 
 const startEditing = () => {
   editableTask.title = task.value.title
