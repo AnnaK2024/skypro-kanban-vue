@@ -42,7 +42,6 @@ const toggleModal = () => {
 const userName = computed(() => auth?.userInfo?.value?.name || 'Профиль')
 const userLogin = computed(() => auth?.userInfo?.value?.login || 'email@example.com')
 
-// refs для элементов
 const modalRef = ref(null)
 const buttonRef = ref(null)
 
@@ -51,13 +50,11 @@ const onClickOutside = (event) => {
   const buttonEl = buttonRef.value
   if (!modalEl || !buttonEl) return
 
-  // если клик вне модалки и вне кнопки — закрываем модалку
   if (!modalEl.contains(event.target) && !buttonEl.contains(event.target)) {
     isModalVisible.value = false
   }
 }
 
-// --- Тема ---
 const isDarkTheme = ref(false)
 
 onMounted(() => {

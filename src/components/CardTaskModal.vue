@@ -50,7 +50,7 @@
                   id="textArea01"
                   :readonly="!isEditing"
                   placeholder="Введите описание задачи..."
-                  v-model="task.description"
+                  v-model="editableTask.description"
                 ></textarea>
               </div>
             </form>
