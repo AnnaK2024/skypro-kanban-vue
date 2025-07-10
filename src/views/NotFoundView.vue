@@ -67,6 +67,8 @@ import { RouterLink } from 'vue-router'
   left: 0;
   width: 100%;
   animation: wave 8s linear infinite;
+  z-index: 0;
+  pointer-events: none;
 }
 .home-button {
   display: inline-block;
@@ -81,6 +83,8 @@ import { RouterLink } from 'vue-router'
     box-shadow 0.3s;
   margin-top: 2rem;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .home-button:hover {
