@@ -1,7 +1,6 @@
-<!-- Карточка создания новой задачи -->
 <template>
   <div class="pop-new-card" v-if="isVisible">
-    <div class="pop-new-card__container">
+    <div class="pop-new-card__container" @click="closeOnBackdropClick">
       <div class="pop-new-card__block">
         <div class="pop-new-card__content">
           <h3 class="pop-new-card__ttl">Создание задачи</h3>
@@ -31,7 +30,7 @@
                 ></textarea>
               </div>
             </form>
-            <BaseCalendar />
+            <BaseCalendar v-model="form.date" />
           </div>
           <div class="pop-new-card__categories categories">
             <p class="categories__p subttl">Категория</p>
@@ -86,7 +85,7 @@ const form = reactive({
   title: '',
   description: '',
   topic: 'Web Design',
-  dueDate: new Date().toISOString(),
+  date: null,
 })
 
 watch(
@@ -102,14 +101,23 @@ watch(
 )
 
 function selectCategory(topic) {
-  form.topic= topic
-  console.log('Selected topic:', topic)
+  form.topic = topic
 }
 
 function createTask() {
   if (!form.title.trim()) {
-    console.log('Creating task with topic:', form.topic)
     alert('Название задачи обязательно')
+    return
+  }
+
+  if (!form.description.trim()) {
+    alert('Описание задачи обязательно')
+    return
+  }
+
+  const due = new Date(form.date)
+  if (!form.date || isNaN(due.getTime())) {
+    alert('Пожалуйста, выберите дату исполнения задачи')
     return
   }
 
@@ -118,27 +126,30 @@ function createTask() {
     title: form.title.trim(),
     description: form.description.trim(),
     topic: form.topic,
-    dueDate: form.dueDate,
+    date: form.date,
     status: 'Без статуса',
   }
 
   if (addTask) {
-    addTask(newTask) // вызываем напрямую
+    addTask(newTask)
   } else {
     console.warn('addTask не найден')
   }
 
-  // Сброс формы
   form.title = ''
   form.description = ''
-  form.topic = 'Web Design'
-  form.dueDate = new Date().toISOString(),
+  form.topic = 'Web Design';
+  (form.date = null), router.push('/')
+}
 
-  router.push('/')
+function closeOnBackdropClick(event) {
+  if (event.target === event.currentTarget) {
+    router.push('/')
+  }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pop-new-card {
   display: block;
   width: 100%;
@@ -259,6 +270,77 @@ function createTask() {
 }
 .pop-new-card:target {
   display: block;
+}
+body.dark-theme {
+  .pop-new-card__container {
+    background: rgba(20, 20, 30, 0.5);
+  }
+
+  .pop-new-card__block {
+    background-color: #20202c;
+    border: 1px solid #3a4a6d;
+    border-radius: 10px;
+    color: #cdd9e5;
+    box-shadow:
+      0 0 10px 3px rgba(58, 74, 109, 0.7),
+      0 4px 12px rgba(26, 38, 72, 0.8);
+    background-image: radial-gradient(circle at center, rgba(58, 74, 109, 0.3), transparent 70%);
+  }
+
+  .pop-new-card__ttl {
+    color: #ffffff;
+  }
+
+  .pop-new-card__close {
+    color: #20202c;
+    transition: color 0.3s ease;
+  }
+  .pop-new-card__close:hover {
+    color: #ffffff;
+  }
+
+  .pop-new-card__wrap {
+    color: #f8f8f2;
+  }
+
+  .pop-new-card__form {
+    color: #ffffff;
+  }
+
+  .form-new__input,
+  .form-new__area {
+    background-color: #20202c;
+    border: 0.7px solid #4e5566;
+    color: #f8f8f2;
+  }
+  .form-new__input::placeholder,
+  .form-new__area::placeholder {
+    color: #94a6be;
+  }
+  .form-new__input::-moz-placeholder,
+  .form-new__area::-moz-placeholder {
+    color: #94a6be;
+  }
+
+  .form-new__input:focus,
+  .form-new__area:focus {
+    border-color: #565eef;
+    box-shadow: 0 0 5px 1px rgba(204, 204, 204, 0.5);
+    outline: none;
+    background-color: #3b3b5c;
+    color: #f8f8f2;
+  }
+  .form-new__create {
+    background-color: #565eef;
+    color: #f8f8f2;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .form-new__create:hover {
+    background-color: #3b3b5c;
+    border: 0.7px solid #565eef;
+    color: #f8f8f2;
+  }
 }
 @media screen and (max-width: 660px) {
   .pop-new-card {

@@ -21,7 +21,7 @@ defineProps({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main__column {
   width: 20%;
   margin: 0 auto;

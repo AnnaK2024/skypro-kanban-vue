@@ -37,9 +37,15 @@
             />
             <p v-show="error" class="error-text">{{ error }}</p>
 
-            <BaseButton class="modal__btn-enter _hover01" id="btnEnter">
+            <BaseButton
+              :disabled="isButtonDisabled"
+              :class="{ disabled: isButtonDisabled }"
+              class="modal__btn-enter _hover01"
+              id="btnEnter"
+            >
               {{ isSignUp ? 'Зарегистрироваться' : 'Войти' }}
             </BaseButton>
+
             <div class="modal__form-group">
               <p>{{ isSignUp ? 'Уже есть аккаунт?' : 'Нужно зарегистрироваться?' }}</p>
               <RouterLink :to="isSignUp ? '/sign-in' : '/sign-up'">{{
@@ -55,12 +61,11 @@
 
 <script setup>
 import { signIn, signUp } from '@/services/auth'
-import { inject, ref } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseInput from './BaseInput.vue'
 import BaseButton from './BaseButton.vue'
 
-// Вытаскиваем функцию из провайдера с помощью inject
 const { setUserInfo } = inject('auth')
 
 const router = useRouter()
@@ -82,34 +87,38 @@ const errors = ref({
 
 const error = ref('')
 
+const isSubmitted = ref(false)
+
+function isFormValid() {
+  if (props.isSignUp && !formData.value.name.trim()) return false
+  if (!formData.value.login.trim()) return false
+  if (!formData.value.password.trim()) return false
+  return true
+}
+
 function validateForm() {
   let isValid = true
   error.value = ''
 
-  // Сбросим все ошибки
   errors.value.name = false
   errors.value.login = false
   errors.value.password = false
 
-  // Проверка имени (только для регистрации)
   if (props.isSignUp && !formData.value.name.trim()) {
     errors.value.name = true
     isValid = false
   }
 
-  // Проверка логина (эл. почты)
   if (!formData.value.login.trim()) {
     errors.value.login = true
     isValid = false
   }
 
-  // Проверка пароля
   if (!formData.value.password.trim()) {
     errors.value.password = true
     isValid = false
   }
 
-  // Если есть ошибки, установим общее сообщение
   if (!isValid) {
     error.value = 'Пожалуйста, заполните все обязательные поля'
   }
@@ -117,9 +126,15 @@ function validateForm() {
   return isValid
 }
 
+const isButtonDisabled = computed(() => {
+  if (!isSubmitted.value) return false
+  return !isFormValid()
+})
+
 async function handleSubmit(event) {
   event.preventDefault()
-  // Валидация формы перед отправкой
+  isSubmitted.value = true
+
   if (!validateForm()) {
     return
   }
@@ -133,12 +148,18 @@ async function handleSubmit(event) {
       router.push('/')
     }
   } catch (err) {
-    error.value = err.message
+    error.value = err.message || 'Ошибка при авторизации'
   }
 }
+
+watch(formData, () => {
+  if (isSubmitted.value) {
+    isSubmitted.value = false
+  }
+})
 </script>
 
-<style scoped >
+<style lang="scss" scoped>
 .container-auth {
   display: block;
   width: 100vw;
@@ -229,6 +250,13 @@ async function handleSubmit(event) {
     justify-content: center;
   }
 }
+.modal__btn-enter.disabled,
+.modal__btn-enter:disabled {
+  background-color: #94a6be !important;
+  color: #ffffff !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
 .modal__form-group {
   text-align: center;
 
@@ -273,4 +301,78 @@ async function handleSubmit(event) {
     }
   }
 }
+/* Темная тема для модального окна авторизации */
+body.dark-theme .container-auth {
+  background-color: #121212; /* или другой очень тёмный фон */
+  color: #e0e0e0; /* если надо, чтобы текст вне формы тоже был светлым */
+}
+
+body.dark-theme .modal {
+  background-color: #121212;
+}
+
+body.dark-theme .modal__block {
+  background-color: #1e1e1e;
+  border: 1px solid rgba(100, 100, 120, 0.6);
+  border-radius: 10px;
+  /* Объёмная дымка вокруг формы */
+  box-shadow:
+    0 0 15px 5px rgba(30, 30, 30, 0.6),    /* тёмный мягкий ореол */
+    0 8px 24px rgba(0, 0, 0, 0.8),          /* глубокая тень снизу */
+    inset 0 0 10px rgba(255, 255, 255, 0.05); /* очень лёгкий внутренний свет */
+  transition: box-shadow 0.3s ease;
+}
+body.dark-theme .modal__block:hover {
+  box-shadow:
+    0 0 25px 8px rgba(30, 30, 30, 0.8),
+    0 12px 36px rgba(0, 0, 0, 0.9),
+    inset 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .modal__ttl h2 {
+  color: #FFFFFF;
+}
+
+body.dark-theme .modal__input {
+  background-color: #2c2c2c;
+  border-color: #555;
+  color: #FFFFFF;
+
+  &::placeholder {
+    color: #94A6BE;
+  }
+}
+
+body.dark-theme .modal__input.error {
+  border-color: red;
+}
+
+body.dark-theme .modal__btn-enter {
+  background-color: #565EEF;
+  color: #FFFFFF;
+  border: none;
+
+  &.disabled,
+  &:disabled {
+    background-color: #94A6BE!important;
+    color: #f0f0f0 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}
+
+body.dark-theme .modal__btn-enter._hover01:hover:not(.disabled):not(:disabled) {
+  background-color: #94A6BE;
+  color: #f0f0f0;
+}
+
+body.dark-theme .modal__form-group p,
+body.dark-theme .modal__form-group a {
+  color: FFFFFF;
+}
+
+body.dark-theme .error-text {
+  color: #ff6b6b;
+}
+
 </style>

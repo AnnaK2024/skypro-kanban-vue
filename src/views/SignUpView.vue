@@ -6,9 +6,8 @@
 import AuthForm from '@/components/AuthForm.vue';
 
 async function handleSignUp() {
-    console.log("Регистрация")
     
 }
 </script>
 
-<style scoped></style>
+<style lang="scss"  scoped ></style>

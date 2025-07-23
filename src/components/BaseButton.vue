@@ -14,7 +14,7 @@ defineProps({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 button,
 ._btn {
   cursor: pointer;
